@@ -4,40 +4,42 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-
+/// <summary>
+/// Enemy state machine behaviour
+/// </summary>
 public class EnemyStateMachine : MonoBehaviour
 {
-    private Dictionary<Type, EnemyBaseState> availableStates;
+    private Dictionary<Type, EnemyBaseState> enemyStates; // dictionary of enemy states
 
-    public EnemyBaseState CurrentState { get; private set; }
-    public event Action<EnemyBaseState> OnStateChanged;
+    public EnemyBaseState CurrentState { get; private set; } // current enemy state
 
-    public void SetState(Dictionary<Type, EnemyBaseState> states)
+    public event Action<EnemyBaseState> OnStateChanged; // event state enemy changed
+
+    // set enemy state
+    public void SetState(Dictionary<Type, EnemyBaseState> _states)
     {
-        availableStates = states;
+        enemyStates = _states;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (CurrentState == null)
+        if (CurrentState == null) // set state
         {
-            CurrentState = availableStates.Values.First();
+            CurrentState = enemyStates.Values.First();
         }
 
-        var nextState = CurrentState?.Tick();
+        Type nextState = CurrentState?.StatePerform(); // get next state
 
-        
         if (nextState != null && nextState != CurrentState?.GetType())
         {
             SwitchToNewState(nextState);
         }
-        
     }
 
     private void SwitchToNewState(Type nextState)
     {
-        CurrentState = availableStates[nextState];
+        CurrentState = enemyStates[nextState];
         OnStateChanged?.Invoke(CurrentState);
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Abstract class for enemy state machine
+/// </summary>
 public abstract class EnemyBaseState
 {
     protected EnemyBaseState(GameObject gameObject)
@@ -14,5 +17,5 @@ public abstract class EnemyBaseState
     protected GameObject gameObject;
     protected Transform transform;
 
-    public abstract Type Tick();
+    public abstract Type StatePerform();
 }

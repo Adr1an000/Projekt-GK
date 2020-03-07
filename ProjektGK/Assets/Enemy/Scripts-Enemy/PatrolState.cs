@@ -5,35 +5,33 @@ using System;
 
 public class PatrolState : EnemyBaseState
 {
-    private Vector3? destination;
-    private float stopDistance = 1.0f;
-    private float turnSpeed = 1.0f;
+    private Vector3? destination; // enemy destination
 
-    private readonly LayerMask _layerMask = LayerMask.NameToLayer("Walls");
-    private float _rayDistance = 3.5f;
+    [SerializeField]
+    private float stopDistance = 1.0f; // stop distance from obstacle
 
-    private EnemyAI enemy;
+    private readonly LayerMask layerMask = LayerMask.NameToLayer("Walls"); // layer mask
 
+    private EnemyAI enemyAI; // enemyAI
 
-    private Quaternion desiredRotation; //targetRotation;
+    private Quaternion desiredRotation; // targetRotation;
 
+    private Vector3 direction;
 
-private Vector3 direction;
+    private Quaternion startingAngle = Quaternion.AngleAxis(-60.0f, Vector3.up); // start angle of view
 
-private Quaternion startingAngle = Quaternion.AngleAxis(-60.0f, Vector3.up);
-private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up);
+    private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up); // stop angle of view
 
+    private int failureRandomDestinationCounter = 0;
 
     //constructor
     public PatrolState(EnemyAI _enemyAI) : base(_enemyAI.gameObject)
     {
-        enemy = _enemyAI;
-
-        Debug.Log("Konstruktor patrol state");
+        enemyAI = _enemyAI;
     }
 
     //this operates like Update() function
-    public override Type Tick()
+    public override Type StatePerform()
     {
        // Debug.Log("Metoda Tick wchodze");
 
@@ -41,7 +39,7 @@ private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up);
         Transform chaseTarget = CheckForTarget();
         if (chaseTarget != null)
         {
-            enemy.SetTarget(chaseTarget);
+            enemyAI.SetTarget(chaseTarget);
 
          //   return (typeof(ChaseState));
         }
@@ -52,15 +50,23 @@ private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up);
             FindRandomDestination();
         }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * enemy.aISettings.turnSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * AISettings.TurnSpeed);
 
         if (IsForwardBlocked())
         {
             FindRandomDestination();
+
+            failureRandomDestinationCounter++;
+
+            if(failureRandomDestinationCounter >= 1000 * Time.deltaTime)
+            {
+                RotateRight();
+            }
         }
         else
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * enemy.aISettings.wanderSpeed);
+            failureRandomDestinationCounter = 0;
+            transform.Translate(Vector3.forward * Time.deltaTime * AISettings.PatrolSpeed);
         }
 
       //  Debug.Log(transform.position.x);
@@ -74,27 +80,24 @@ private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up);
         var direction = angle * Vector3.forward;
         var pos = transform.position;
 
-        for(int i = 0; i < 24; i++)
+        for(int i = 0; i < 30; i++)
         {
-            if (Physics.Raycast(pos, direction, out hit, 10.0f))
+            if (Physics.Raycast(pos, direction, out hit, AISettings.DetectionRange))
             {
                 var enemy = hit.collider.GetComponent<EnemyAI>();
                 if(enemy != null && enemy.Team != gameObject.GetComponent<EnemyAI>().Team)
                 {
                     Debug.DrawRay(pos, direction * hit.distance, Color.red);
-                    Debug.Log("RED");
                     return enemy.transform;
                 }
                 else
                 {
                     Debug.DrawRay(pos, direction * hit.distance, Color.yellow);
-                    Debug.Log("YELLOW");
                 }
             }
             else
             {
-                Debug.Log("WHITE");
-                Debug.DrawRay(transform.position, direction * 10f, Color.blue);
+                Debug.DrawRay(transform.position, direction * AISettings.DetectionRange, Color.white);
             }
             direction = stepAngle * direction;
         }
@@ -102,10 +105,15 @@ private Quaternion stepAngle = Quaternion.AngleAxis(5.0f, Vector3.up);
         return null;
     }
 
+    private void RotateRight()
+    {
+        transform.Rotate(0.0f, 5f, 0.0f);
+    }
+
     private bool IsForwardBlocked()
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        return Physics.SphereCast(ray, 0.5f, _rayDistance, _layerMask);
+        return Physics.SphereCast(ray, 0.5f, AISettings.DetectionRange, layerMask);
     }
 
     void FindRandomDestination()

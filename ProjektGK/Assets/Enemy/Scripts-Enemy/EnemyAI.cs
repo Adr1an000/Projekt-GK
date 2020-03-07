@@ -5,33 +5,20 @@ using System;
 
 public class EnemyAI : MonoBehaviour
 {
-    // this should be in it...
     [SerializeField]
-    public int Team; // enemy/player
+    public int Team { get; private set; } = 1; // team (enemy = 1 or player = 0)
 
     [SerializeField]
-    private GameObject Weapon; // weapon
+    private GameObject Weapon; /// TODO
 
     public Transform Target { get; private set; } // attack target
 
-    public EnemyStateMachine EnemyStateMachine => GetComponent<EnemyStateMachine>(); // enemy interactions
-
+    public EnemyStateMachine EnemyStateMachine => GetComponent<EnemyStateMachine>(); // enemy state machine behaviour
    
-    public AISettings aISettings;
-   
-
-    // Another weapons ?
-    /*
-    [SerializeField]
-    private NPCWeaponSystem weaponSystem;
-    */
-
-    // init stuff
+    // init enemy
     private void Awake()
     {
         InitStateMachine(); // initialise enemy's state machine
-
-     //   weaponSystem = GetComponentInChildren<NPCWeaponSystem>(); // weapon system
     }
 
     private void InitStateMachine()
@@ -45,13 +32,15 @@ public class EnemyAI : MonoBehaviour
         GetComponent<EnemyStateMachine>().SetState(states);
     }
 
-    public void SetTarget(Transform _target) // target lock
+    // lock target
+    public void SetTarget(Transform _target)
     {
         Target = _target;
     }
 
-    public void FireWeapon(bool _fireState) // FIRE 
+    // fire from weapon
+    public void FireWeapon(bool _fire)
     {
-       // weaponSystem.FireWeaponSlave(_fireState);
+        /// TODO
     }
 }
