@@ -41,7 +41,7 @@ public class PatrolState : EnemyBaseState
         {
             enemyAI.SetTarget(chaseTarget);
 
-         //   return (typeof(ChaseState));
+           return (typeof(ChaseState));
         }
 
         //if no target wnader aimlessly
@@ -80,13 +80,15 @@ public class PatrolState : EnemyBaseState
         var direction = angle * Vector3.forward;
         var pos = transform.position;
 
-        for(int i = 0; i < 30; i++)
+        for (int i = 0; i < 30; i++)
         {
             if (Physics.Raycast(pos, direction, out hit, AISettings.DetectionRange))
             {
-                var enemy = hit.collider.GetComponent<EnemyAI>();
-                if(enemy != null && enemy.Team != gameObject.GetComponent<EnemyAI>().Team)
+                var enemy = hit.collider.GetComponent<TeamRecognition>();
+               
+                if ((enemy != null && enemy.Team != gameObject.GetComponent<TeamRecognition>().Team))
                 {
+                    Debug.Log("FOUND PLAYER");
                     Debug.DrawRay(pos, direction * hit.distance, Color.red);
                     return enemy.transform;
                 }

@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField]
-    public int Team { get; private set; } = 1; // team (enemy = 1 or player = 0)
+    public int Team; // team (enemy = 1 or player = 0)
 
     [SerializeField]
     private GameObject Weapon; /// TODO
 
-    public Transform Target { get; private set; } // attack target
+    [SerializeField]
+    public NavMeshAgent agent;
+
+    [SerializeField]
+    public GameObject playerTarget;
+
+    public Transform Target { get; set; } // attack target
 
     public EnemyStateMachine EnemyStateMachine => GetComponent<EnemyStateMachine>(); // enemy state machine behaviour
    
@@ -26,7 +33,8 @@ public class EnemyAI : MonoBehaviour
         var states = new Dictionary<Type, EnemyBaseState>()
         {
         
-            { typeof(PatrolState), new PatrolState(this)}
+            { typeof(PatrolState), new PatrolState(this)},
+            {typeof(ChaseState), new ChaseState(this) }
 
         };
         GetComponent<EnemyStateMachine>().SetState(states);
