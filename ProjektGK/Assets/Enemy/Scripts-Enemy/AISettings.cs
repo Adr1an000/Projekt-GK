@@ -17,7 +17,10 @@ public static class AISettings
     public static float AttackRange { get; set; } = 10.0f;
 
     [SerializeField]
-    public static float DetectionRange { get; set; } = 2.0f;
+    public static float DetectionRange { get; set; } = 10.0f;
+
+    [SerializeField]
+    public static float ObstacleReverseRange { get; set; } = 2.0f;
 
     [SerializeField]
     public static LayerMask opponentLayers;

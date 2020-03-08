@@ -58,7 +58,7 @@ public class PatrolState : EnemyBaseState
 
             failureRandomDestinationCounter++;
 
-            if(failureRandomDestinationCounter >= 1000 * Time.deltaTime)
+            if(failureRandomDestinationCounter >= 500 * Time.deltaTime)
             {
                 RotateRight();
             }
@@ -109,13 +109,13 @@ public class PatrolState : EnemyBaseState
 
     private void RotateRight()
     {
-        transform.Rotate(0.0f, 5f, 0.0f);
+        transform.Rotate(0.0f, 45f, 0.0f);
     }
 
     private bool IsForwardBlocked()
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        return Physics.SphereCast(ray, 0.5f, AISettings.DetectionRange, layerMask);
+        return Physics.SphereCast(ray, 0.5f, AISettings.ObstacleReverseRange, layerMask);
     }
 
     void FindRandomDestination()
