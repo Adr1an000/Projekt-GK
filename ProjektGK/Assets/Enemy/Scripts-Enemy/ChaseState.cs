@@ -30,6 +30,11 @@ public class ChaseState : EnemyBaseState
             enemyAI.Target = null;
         }
 
+        if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < AISettings.AttackRange + 20f)
+        {
+            return typeof(AttackState);
+        }
+
         return null;
     }
 }
