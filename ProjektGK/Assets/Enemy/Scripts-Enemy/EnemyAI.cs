@@ -6,11 +6,33 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    //******************
+
+    public int frameInterval = 10;
+    public int facePlayerFactor = 50; // for facing the player
+
+    public float rangeRandPoint = 6f;
+    public bool isHiding = false;
+
+    public bool coverIsClose; // is cover in reach?
+    public bool coverNotReached = true; // if true, AI is not close enough to the cover object
+    public float distToCoverObj = 20f; // 60f
+    public float distToCoverPos = 1f;
+
+    //*******************
+
+
     [SerializeField]
     private GameObject Weapon; /// TODO
 
     [SerializeField]
     public NavMeshAgent AgentPath;
+
+    [SerializeField]
+    public LayerMask coverLayer; // to set the layer that should be used as cover
+
+    [SerializeField]
+    public LayerMask visibleLayer; // to declare objects on layer that might obstruct the view between AI and target/player
 
     public GameObject PlayerTarget { get; private set; }
 
@@ -31,7 +53,8 @@ public class EnemyAI : MonoBehaviour
         var states = new Dictionary<Type, EnemyBaseState>()
         {
             { typeof(PatrolState), new PatrolState(this)},
-            {typeof(ChaseState), new ChaseState(this) }
+            {typeof(ChaseState), new ChaseState(this) },
+            { typeof(AttackState), new AttackState(this) }
 
         };
         GetComponent<EnemyStateMachine>().SetState(states);
