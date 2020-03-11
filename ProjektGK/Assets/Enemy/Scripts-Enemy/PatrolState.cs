@@ -8,7 +8,7 @@ public class PatrolState : EnemyBaseState
     private Vector3? destination; // enemy destination
 
     [SerializeField]
-    private float stopDistance = 1.0f; // stop distance from obstacle
+    private float stopDistance = 2.0f; // stop distance from obstacle
 
     private readonly LayerMask layerMask = LayerMask.NameToLayer("Walls"); // layer mask
 
@@ -33,13 +33,11 @@ public class PatrolState : EnemyBaseState
     //this operates like Update() function
     public override Type StatePerform()
     {
-       // Debug.Log("Metoda Tick wchodze");
-
         //check for target
         Transform chaseTarget = CheckForTarget();
         if (chaseTarget != null)
         {
-            enemyAI.SetTarget(chaseTarget);
+           enemyAI.SetTarget(chaseTarget);
 
            return (typeof(ChaseState));
         }
@@ -69,39 +67,47 @@ public class PatrolState : EnemyBaseState
             transform.Translate(Vector3.forward * Time.deltaTime * AISettings.PatrolSpeed);
         }
 
-      //  Debug.Log(transform.position.x);
         return null;
     }
 
     private Transform CheckForTarget()
     {
-        RaycastHit hit;
-        var angle = transform.rotation * startingAngle;
-        var direction = angle * Vector3.forward;
-        var pos = transform.position;
+        // martwy kod, kocept Adriana jest taki, by rzucala sie horda na gracza. to na dole to bardziej pod skradanke
 
-        for (int i = 0; i < 30; i++)
+        /*
+       RaycastHit hit;
+       var angle = transform.rotation * startingAngle;
+       var direction = angle * Vector3.forward;
+       var pos = transform.position;
+
+       for (int i = 0; i < 30; i++)
+       {
+           if (Physics.Raycast(pos, direction, out hit, AISettings.DetectionRange))
+           {
+               var enemy = hit.collider.GetComponent<TeamRecognition>();
+
+               if ((enemy != null && enemy.Team != gameObject.GetComponent<TeamRecognition>().Team))
+               {
+                   Debug.Log("FOUND PLAYER");
+                   Debug.DrawRay(pos, direction * hit.distance, Color.red);
+                   return enemy.transform;
+               }
+               else
+               {
+                   Debug.DrawRay(pos, direction * hit.distance, Color.yellow);
+               }
+           }
+           else
+           {
+               Debug.DrawRay(transform.position, direction * AISettings.DetectionRange, Color.white);
+           }
+           direction = stepAngle * direction;
+       }
+       */
+
+        if (Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < AISettings.MinDistanceFromPlayer)
         {
-            if (Physics.Raycast(pos, direction, out hit, AISettings.DetectionRange))
-            {
-                var enemy = hit.collider.GetComponent<TeamRecognition>();
-               
-                if ((enemy != null && enemy.Team != gameObject.GetComponent<TeamRecognition>().Team))
-                {
-                    Debug.Log("FOUND PLAYER");
-                    Debug.DrawRay(pos, direction * hit.distance, Color.red);
-                    return enemy.transform;
-                }
-                else
-                {
-                    Debug.DrawRay(pos, direction * hit.distance, Color.yellow);
-                }
-            }
-            else
-            {
-                Debug.DrawRay(transform.position, direction * AISettings.DetectionRange, Color.white);
-            }
-            direction = stepAngle * direction;
+            return enemyAI.PlayerTarget.transform.transform;
         }
 
         return null;

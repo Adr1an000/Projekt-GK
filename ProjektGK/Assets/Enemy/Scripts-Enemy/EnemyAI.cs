@@ -7,16 +7,12 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField]
-    public int Team; // team (enemy = 1 or player = 0)
-
-    [SerializeField]
     private GameObject Weapon; /// TODO
 
     [SerializeField]
-    public NavMeshAgent agent;
+    public NavMeshAgent AgentPath;
 
-    [SerializeField]
-    public GameObject playerTarget;
+    public GameObject PlayerTarget { get; private set; }
 
     public Transform Target { get; set; } // attack target
 
@@ -26,13 +22,14 @@ public class EnemyAI : MonoBehaviour
     private void Awake()
     {
         InitStateMachine(); // initialise enemy's state machine
+
+        PlayerTarget = GameObject.Find("Player");
     }
 
     private void InitStateMachine()
     {
         var states = new Dictionary<Type, EnemyBaseState>()
         {
-        
             { typeof(PatrolState), new PatrolState(this)},
             {typeof(ChaseState), new ChaseState(this) }
 
