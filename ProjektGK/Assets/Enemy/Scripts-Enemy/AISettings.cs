@@ -8,6 +8,9 @@ public static class AISettings
     public static float PatrolSpeed { get; set; } = 2.0f;
 
     [SerializeField]
+    public static float MinDistanceFromPlayer { get; set; } = 30.0f;
+
+    [SerializeField]
     public static float ChaseSpeed { get; set; } = 4.0f;
 
     [SerializeField]

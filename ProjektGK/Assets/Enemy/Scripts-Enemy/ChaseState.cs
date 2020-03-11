@@ -7,42 +7,26 @@ public class ChaseState : EnemyBaseState
 {
     private EnemyAI enemyAI;
 
-    private bool chasePlayer = false;
-
-    private Vector3 targetLastLocation;
-
     public ChaseState(EnemyAI _enemyAI) : base(_enemyAI.gameObject)
     {
         enemyAI = _enemyAI;
-        chasePlayer = true;
     }
 
     public override Type StatePerform()
     {
         if(enemyAI.Target == null)
         {
-            chasePlayer = true;
-
             return typeof(PatrolState);
         }
 
-        if(chasePlayer == true)
+        enemyAI.AgentPath.SetDestination(enemyAI.PlayerTarget.transform.position);
+
+        enemyAI.AgentPath.stoppingDistance = 5;
+
+        if (Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) > AISettings.MinDistanceFromPlayer + 10f)
         {
-            transform.LookAt(enemyAI.Target);
-
-            targetLastLocation = enemyAI.Target.position;
-
-            chasePlayer = false;
-        }
-
-        enemyAI.agent.SetDestination(targetLastLocation);
-
-        enemyAI.agent.stoppingDistance = 5;
-
-        if (Vector3.Distance(transform.position, enemyAI.agent.destination) <= 5f)
-        {
-            enemyAI.agent.isStopped = true;
-            enemyAI.agent.ResetPath();
+            enemyAI.AgentPath.isStopped = true;
+            enemyAI.AgentPath.ResetPath();
             enemyAI.Target = null;
         }
 
