@@ -153,7 +153,7 @@ MonoBehaviour:
   barrelEnd: {fileID: 1062671121}
   projectile: {fileID: 446137534209056595, guid: 67e99fadad6506f47b962eccd32167e0,
     type: 3}
-  projectileSpeed: 1
+  projectileSpeed: 15.22
   damage: 10
   fireRate: 5
   spread: 0
