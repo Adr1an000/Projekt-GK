@@ -116,9 +116,11 @@ public class AttackState : EnemyBaseState
             {
 
                 enemyAI.AgentPath.SetDestination(coverPoint);
-                if((coverPoint - enemyAI.transform.position).sqrMagnitude <= enemyAI.distToCoverPos * enemyAI.distToCoverPos) // 0.75f
+
+                Debug.Log(coverPoint.x + " " + coverPoint.y + " " + coverPoint.z);
+                if ((coverPoint - enemyAI.transform.position).sqrMagnitude <= enemyAI.distToCoverPos * enemyAI.distToCoverPos) // 0.75f
                 {
-                    Debug.Log("DRUGI");
+                    
                     enemyAI.isHiding = true;
                 }
             }
@@ -153,12 +155,12 @@ public class AttackState : EnemyBaseState
                     if(enemyAI.coverNotReached == true)
                     {
                         enemyAI.AgentPath.SetDestination(coverObj); // gor ==t to the cover obj
+                        FacePlayer();
                     }
 
                     if(enemyAI.coverNotReached == false) // when close enough to cover, take cover
                     {
                         TakeCover();
-
                         FacePlayer();
                     }
                 }
@@ -168,6 +170,14 @@ public class AttackState : EnemyBaseState
                     // do sth else like attack or chase
                 }
             }
+        }
+
+        if (Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position) > AISettings.MinDistanceFromPlayer + 10f)
+        {
+            enemyAI.AgentPath.isStopped = true;
+            enemyAI.AgentPath.ResetPath();
+            enemyAI.Target = enemyAI.PlayerTarget.transform;
+            return typeof(ChaseState);
         }
 
         return null;

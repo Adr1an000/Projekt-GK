@@ -32,6 +32,8 @@ public class ChaseState : EnemyBaseState
 
         if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < AISettings.AttackRange + 20f)
         {
+            enemyAI.AgentPath.ResetPath();
+            enemyAI.Target = null;
             return typeof(AttackState);
         }
 
