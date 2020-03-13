@@ -9,22 +9,16 @@ public class AttackState : EnemyBaseState
 {
     private EnemyAI enemyAI;
 
-   
-
-    public float rangeDist = 55f;
-
-    // GoToCover
-
     Vector3 coverObj; // to store the cover object positions
 
+    private float maxCovDist = 500; // if distance to cover is greater than this, do sth else
 
-    private float maxCovDist = 50; // if distance to cover is greater than this, do sth else
     private bool playerInRange = false;
 
     private int testCoverPos = 10;
 
-    // take cover hide
     Vector3 randomPosition;
+
     Vector3 coverPoint;
 
     // bool to find positions behind cover
@@ -35,9 +29,9 @@ public class AttackState : EnemyBaseState
             randomPosition = center + UnityEngine.Random.insideUnitSphere * rangeRandPoint;
             Vector3 direction = enemyAI.PlayerTarget.transform.position - randomPosition;
             RaycastHit hitTestCov;
-            if(Physics.Raycast(randomPosition, direction.normalized, out hitTestCov, rangeRandPoint, enemyAI.visibleLayer))
+            if(Physics.Raycast(randomPosition, direction.normalized, out hitTestCov, rangeRandPoint, enemyAI.VisibleLayer))
             {
-                if(hitTestCov.collider.gameObject.layer == 18)
+                if(hitTestCov.collider.gameObject.layer == 18) // 18-COVER LAYER
                 {
                     resultCover = randomPosition;
                     return true;
@@ -57,7 +51,7 @@ public class AttackState : EnemyBaseState
     void CheckCoverDist()
     {
         // check if cover is in vicinity
-        Collider[] colliders = Physics.OverlapSphere(transform.position, maxCovDist, enemyAI.coverLayer);
+        Collider[] colliders = Physics.OverlapSphere(enemyAI.transform.position, maxCovDist, enemyAI.CoverLayer);
         Collider nearestCollider = null;
         float minSqrDistance = Mathf.Infinity;
 
@@ -73,29 +67,32 @@ public class AttackState : EnemyBaseState
 
                 // to chceck if AI is already close enough to take cover
                 float coverDistance = (nearestCollider.transform.position - AI_position).sqrMagnitude;
+                Debug.Log(coverDistance);
 
-                if(coverDistance <= maxCovDist * maxCovDist)
+                if (coverDistance <= maxCovDist * maxCovDist)
                 {
-                    enemyAI.coverIsClose = true;
+                    enemyAI.CoverIsClose = true;
                     coverObj = nearestCollider.transform.position;
-                    if(coverDistance <= enemyAI.distToCoverObj * enemyAI.distToCoverObj)
+                    if(coverDistance < enemyAI.DistToCoverObj)
                     {
-                        enemyAI.coverNotReached = false;
+                        Debug.Log("Cover not reached false");
+                        enemyAI.CoverNotReached = false;
                     }
-                    else if(coverDistance > enemyAI.distToCoverObj * enemyAI.distToCoverObj)
+                    else
                     {
-                        enemyAI.coverNotReached = true;
+                        Debug.Log("Cover not reached true");
+                        enemyAI.CoverNotReached = true;
                     }
                 }
                 if(coverDistance >= maxCovDist * maxCovDist)
                 {
-                    enemyAI.coverIsClose = false;
+                    enemyAI.CoverIsClose = false;
                 }
             }
         }
         if(colliders.Length < 1)
         {
-            enemyAI.coverIsClose = false;
+            enemyAI.CoverIsClose = false;
         }
     }
 
@@ -103,25 +100,21 @@ public class AttackState : EnemyBaseState
     {
         Vector3 direction = (enemyAI.PlayerTarget.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * enemyAI.facePlayerFactor);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * enemyAI.FacePlayerFactor);
     }
 
     void TakeCover()
     {
-
-        if (RandomPoint(enemyAI.transform.position, enemyAI.rangeRandPoint, out coverPoint))
+        if (RandomPoint(enemyAI.transform.position, enemyAI.RangeRandPoint, out coverPoint))
         {
-
             if(enemyAI.AgentPath.isActiveAndEnabled)
             {
-
                 enemyAI.AgentPath.SetDestination(coverPoint);
 
                 Debug.Log(coverPoint.x + " " + coverPoint.y + " " + coverPoint.z);
-                if ((coverPoint - enemyAI.transform.position).sqrMagnitude <= enemyAI.distToCoverPos * enemyAI.distToCoverPos) // 0.75f
+                if ((coverPoint - enemyAI.transform.position).sqrMagnitude <= enemyAI.DistToCoverPos)
                 {
-                    
-                    enemyAI.isHiding = true;
+                    enemyAI.IsHiding = true;
                 }
             }
         }
@@ -131,11 +124,11 @@ public class AttackState : EnemyBaseState
     {
         if(enemyAI.AgentPath.isActiveAndEnabled)
         {
-            if(Time.frameCount % enemyAI.frameInterval == 0) // to this only every few frame, no neeed to do it every frame
+            if(Time.frameCount % enemyAI.FrameInterval == 0) // to this only every few frame, no neeed to do it every frame
             {
-                float distance = ((enemyAI.PlayerTarget.transform.position - transform.position).sqrMagnitude); // check distance to player
+                float distance = Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position);
 
-                if (distance < rangeDist * rangeDist)
+                if (distance < enemyAI.MinDistanceFromPlayer)
                 {
                     playerInRange = true;
                 }
@@ -145,34 +138,31 @@ public class AttackState : EnemyBaseState
                 }
             }
 
-            
             if(playerInRange == true)
             {
                 CheckCoverDist(); // check if cover is close enough
 
-                if(enemyAI.coverIsClose == true)
+                if(enemyAI.CoverIsClose == true)
                 {
-                    if(enemyAI.coverNotReached == true)
+                    if(enemyAI.CoverNotReached == true)
                     {
                         enemyAI.AgentPath.SetDestination(coverObj); // gor ==t to the cover obj
                         FacePlayer();
                     }
-
-                    if(enemyAI.coverNotReached == false) // when close enough to cover, take cover
+                    else // when close enough to cover, take cover
                     {
                         TakeCover();
                         FacePlayer();
                     }
                 }
-                if(enemyAI.coverIsClose == false) // cover is too far away
+                if(enemyAI.CoverIsClose == false) // cover is too far away
                 {
-                    Debug.Log("Cover is too far");
-                    // do sth else like attack or chase
+                   
                 }
             }
         }
 
-        if (Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position) > AISettings.MinDistanceFromPlayer + 10f)
+        if (Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position) > enemyAI.MinDistanceFromPlayer)
         {
             enemyAI.AgentPath.isStopped = true;
             enemyAI.AgentPath.ResetPath();

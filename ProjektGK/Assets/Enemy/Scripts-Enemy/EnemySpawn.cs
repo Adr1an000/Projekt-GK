@@ -6,37 +6,38 @@ using UnityEngine.UI;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
-    private GameObject spawnedEnemy;
+    private GameObject SpawnedEnemy;
 
     [SerializeField]
-    private float spawnTime;
+    private float SpawnTime = 5;
 
     [SerializeField]
-    private float spawnDelay;
+    private float SpawnDelay = 2;
 
     [SerializeField]
-    private int maxEnemySpawn = 10;
+    private int MaxEnemySpawn = 10;
 
-    private int enemyFromPortal;
+    [SerializeField]
+    public int EnemyFromPortal = 0;
 
-    private GameObject counterText;
+    private GameObject CounterText;
     
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", spawnTime, spawnDelay);
-        counterText = GameObject.Find("EnemyCounter");
-        counterText.GetComponent<TextMesh>().text = "10";
+        InvokeRepeating("SpawnEnemy", SpawnTime, SpawnDelay);
+        CounterText = GameObject.Find("EnemyCounter");
+        CounterText.GetComponent<TextMesh>().text = "10";
     }
 
     public void SpawnEnemy()
     {
-        Instantiate(spawnedEnemy, transform.position, transform.rotation);
-        enemyFromPortal++;
+        Instantiate(SpawnedEnemy, transform.position, transform.rotation);
+        EnemyFromPortal++;
 
-        counterText.GetComponent<TextMesh>().text = (maxEnemySpawn - enemyFromPortal).ToString();
+        CounterText.GetComponent<TextMesh>().text = (MaxEnemySpawn - EnemyFromPortal).ToString();
 
-        if(enemyFromPortal >= maxEnemySpawn)
+        if(EnemyFromPortal >= MaxEnemySpawn)
         {
             CancelInvoke("SpawnEnemy");
         }
