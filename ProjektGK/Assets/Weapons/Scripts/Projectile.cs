@@ -8,13 +8,29 @@ public class Projectile : MonoBehaviour
 
     public Vector3 Velocity { get; set; }
     public float Lifetime { get; set; }
-    public float Damage { get; set; }
+    public int Damage { get; set; }
     public int Affiliation { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if other object is a weaon or a projectile ignore the collision
+        if (collision.gameObject.GetComponent<Weapon>() != null ||
+            collision.gameObject.GetComponent<Projectile>() != null)
+        {
+            return;
+        }
+        Health health = collision.gameObject.GetComponent<Health>();
+        if (health != null)
+        {
+            health.DealDamage(Damage, Affiliation);
+        }
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
