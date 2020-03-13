@@ -107,7 +107,7 @@ public class PatrolState : EnemyBaseState
 
         if (Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < AISettings.MinDistanceFromPlayer)
         {
-            return enemyAI.PlayerTarget.transform.transform;
+            return enemyAI.PlayerTarget.transform;
         }
 
         return null;
