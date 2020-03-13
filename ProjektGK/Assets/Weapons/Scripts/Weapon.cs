@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Tooltip("The end of the barrel where projectiles and effects will be spawned")]
+    [Tooltip("The end of the barrel where projectiles will be spawned")]
     public Transform barrelEnd;
     [Tooltip("Weapon will face the same direction as rotation reference transform")]
     public Transform rotationReference;
@@ -20,8 +20,10 @@ public class Weapon : MonoBehaviour
     public float range;
     public bool automatic;
     public int numberOfProjectiles = 1;
-    public Animator shootAnimation;
-    public float animationSpeed = 1f;
+    public Animator recoilAnimation;
+    [Tooltip("Manually tweak the speed of the animation. Animation speed is equal to the fire rate times this value")]
+    public float animationSpeedMultiplier = 1f;
+    public ParticleSystem muzzleFlash;
     
     private float timeSinceLastShot = 0f;
     private bool shouldShoot = false;
@@ -58,12 +60,15 @@ public class Weapon : MonoBehaviour
             if (timeSinceLastShot > 1f / fireRate)
             {
                 timeSinceLastShot = 0f;
-                if (shootAnimation)
+                if (recoilAnimation)
                 {
-                    shootAnimation.speed = fireRate;
-                    shootAnimation.Play("RecoilAnim");
+                    recoilAnimation.speed = fireRate * animationSpeedMultiplier;
+                    recoilAnimation.Play("RecoilAnim");
                 }
-                    //shootAnimation.Play();
+                if (muzzleFlash)
+                {
+                    muzzleFlash.Play();
+                }
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
                     ShootProjectile();
