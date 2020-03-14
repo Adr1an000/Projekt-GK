@@ -19,6 +19,8 @@ public class EnemyAI : MonoBehaviour
 
     public EnemyStateMachine EnemyStateMachine => GetComponent<EnemyStateMachine>(); // enemy state machine behaviour
 
+    public Weapon weapon;
+
     // show to gui Unity
     [SerializeField]
     public int FrameInterval = 10; // every how many frames update behaviour
@@ -74,6 +76,11 @@ public class EnemyAI : MonoBehaviour
         InitStateMachine(); // initialise enemy's state machine
 
         PlayerTarget = GameObject.Find("Player"); // player !!!
+
+        if(!weapon)
+        {
+            weapon = GetComponentInChildren<Weapon>();
+        }
     }
 
     // init behaviour state machine

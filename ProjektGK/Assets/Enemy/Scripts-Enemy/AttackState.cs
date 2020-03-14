@@ -21,6 +21,13 @@ public class AttackState : EnemyBaseState
 
     Vector3 coverPoint;
 
+    // shooting
+    private float timerShots;
+
+    private float timeBtwShots = 0.25f;
+
+    private float fireRadius = 25f;
+
     // bool to find positions behind cover
     bool RandomPoint(Vector3 center, float rangeRandPoint, out Vector3 resultCover)
     {
@@ -140,6 +147,8 @@ public class AttackState : EnemyBaseState
 
             if(playerInRange == true)
             {
+                FireBullet();
+
                 CheckCoverDist(); // check if cover is close enough
 
                 if(enemyAI.CoverIsClose == true)
@@ -157,7 +166,7 @@ public class AttackState : EnemyBaseState
                 }
                 if(enemyAI.CoverIsClose == false) // cover is too far away
                 {
-                   
+                    
                 }
             }
         }
@@ -171,6 +180,32 @@ public class AttackState : EnemyBaseState
         }
 
         return null;
+    }
+
+    void FireBullet()
+    {
+        RaycastHit hitPlayer;
+        Ray playerPos = new Ray(enemyAI.transform.position, enemyAI.transform.forward);
+
+        if(Physics.SphereCast(playerPos, 0.25f, out hitPlayer, fireRadius))
+        {
+            if(timerShots <= 0 && hitPlayer.transform.tag == "Player")
+            {
+                // shoot here code
+                enemyAI.weapon.PressTrigger();
+
+                timerShots = timeBtwShots;
+            }
+            else
+            {
+                enemyAI.weapon.ReleaseTrigger();
+                timerShots -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            enemyAI.weapon.ReleaseTrigger();
+        }
     }
 
 }
