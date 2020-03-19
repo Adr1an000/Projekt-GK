@@ -14,14 +14,16 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         //if other object is a weaon or a projectile ignore the collision
         if (collision.gameObject.GetComponent<Weapon>() != null ||
-            collision.gameObject.GetComponent<Projectile>() != null)
+            collision.gameObject.GetComponentInParent<Weapon>() != null ||
+            collision.gameObject.GetComponent<Projectile>() != null ||
+            collision.gameObject.GetComponentInParent<Projectile>() != null)
         {
             return;
         }
