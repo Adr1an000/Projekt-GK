@@ -23,14 +23,15 @@ public class ChaseState : EnemyBaseState
 
         enemyAI.AgentPath.stoppingDistance = 5;
 
-        if (Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) > AISettings.MinDistanceFromPlayer + 10f)
+        if (Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) > enemyAI.MinDistanceFromPlayer)
         {
             enemyAI.AgentPath.isStopped = true;
             enemyAI.AgentPath.ResetPath();
             enemyAI.Target = null;
+            return typeof(PatrolState);
         }
 
-        if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < AISettings.AttackRange + 20f)
+        if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < enemyAI.AttackRange)
         {
             enemyAI.AgentPath.ResetPath();
             enemyAI.Target = null;

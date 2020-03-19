@@ -4,9 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-/// <summary>
-/// Enemy state machine behaviour
-/// </summary>
+
 public class EnemyStateMachine : MonoBehaviour
 {
     private Dictionary<Type, EnemyBaseState> enemyStates; // dictionary of enemy states
