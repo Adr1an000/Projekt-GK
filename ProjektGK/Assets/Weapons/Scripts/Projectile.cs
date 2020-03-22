@@ -11,10 +11,15 @@ public class Projectile : MonoBehaviour
     public int Damage { get; set; }
     public int Affiliation { get; set; }
 
+    public new Collider collider;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        if (collider == null)
+        {
+            collider = GetComponentInChildren<Collider>();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -25,6 +30,7 @@ public class Projectile : MonoBehaviour
             collision.gameObject.GetComponent<Projectile>() != null ||
             collision.gameObject.GetComponentInParent<Projectile>() != null)
         {
+            Physics.IgnoreCollision(collider, collision.collider);
             return;
         }
         Health health = collision.gameObject.GetComponent<Health>();

@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class W_TestShooting : MonoBehaviour
 {
-    public Weapon weapon;
+    //public Weapon weapon;
+    public WeaponManager manager;
+    public Dictionary<KeyCode, int> keyMap = new Dictionary<KeyCode, int>();
     // Start is called before the first frame update
     void Start()
     {
-        if (!weapon)
+        keyMap.Add(KeyCode.Alpha1, 0);
+        keyMap.Add(KeyCode.Alpha2, 1);
+        if (!manager)
         {
-            weapon = GetComponentInChildren<Weapon>();
+            manager = GetComponentInChildren<WeaponManager>();
         }
     }
 
@@ -20,16 +24,26 @@ public class W_TestShooting : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if (weapon)
+            if (manager)
             {
-                weapon.PressTrigger();
+                manager.GetCurrentWeapon().PressTrigger();
             }
         }
         else if (Input.GetButtonUp("Fire1"))
         {
-            if (weapon)
+            if (manager)
             {
-                weapon.ReleaseTrigger();
+                manager.GetCurrentWeapon().ReleaseTrigger();
+            }
+        } 
+        else
+        {
+            foreach (var pair in keyMap)
+            {
+                if (Input.GetKeyDown(pair.Key))
+                {
+                    manager.SetCurrentWeapon(pair.Value);
+                }
             }
         }
     }
