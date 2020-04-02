@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public class EnemyAI : MonoBehaviour
 {
     // hidden from gui Unity
@@ -11,15 +13,11 @@ public class EnemyAI : MonoBehaviour
 
     public GameObject PlayerTarget { get; private set; } // player object
 
-    public Transform Target { get; set; } // attack target position
-
     public bool CoverIsClose { get; set; } // is cover in reach?
 
     public bool CoverNotReached { get; set; } = true; // if true, AI is not close enough to the cover object
 
     public EnemyStateMachine EnemyStateMachine => GetComponent<EnemyStateMachine>(); // enemy state machine behaviour
-
-    public Weapon weapon;
 
     // show to gui Unity
     [SerializeField]
@@ -68,19 +66,38 @@ public class EnemyAI : MonoBehaviour
     public LayerMask VisibleLayer; // to declare objects on layer that might obstruct the view between AI and target/player
 
     [SerializeField]
-    private GameObject Weapon; /// TODO
+    public Weapon Weapon;
+
+    [SerializeField]
+    public Animator Anim;
+
 
     // init enemy
     private void Awake()
     {
         InitStateMachine(); // initialise enemy's state machine
 
-        PlayerTarget = GameObject.Find("Player"); // player !!!
-
-        if(!weapon)
+        if(!PlayerTarget)
         {
-            weapon = GetComponentInChildren<Weapon>();
+            PlayerTarget = GameObject.Find("Player");
         }
+
+        if(!Anim)
+        {
+            Anim = GetComponent<Animator>();
+        }
+
+        if(!AgentPath)
+        {
+            AgentPath = GetComponent<NavMeshAgent>();
+        }
+
+        if(!Weapon)
+        {
+            Weapon = GetComponentInChildren<Weapon>();
+        }
+
+        AgentPath.updateRotation = true;
     }
 
     // init behaviour state machine
@@ -94,11 +111,5 @@ public class EnemyAI : MonoBehaviour
 
         };
         GetComponent<EnemyStateMachine>().SetState(states);
-    }
-
-    // lock target
-    public void SetTarget(Transform _target)
-    {
-        Target = _target;
     }
 }

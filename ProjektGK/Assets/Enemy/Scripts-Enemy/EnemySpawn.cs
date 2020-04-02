@@ -12,7 +12,7 @@ public class EnemySpawn : MonoBehaviour
     private float SpawnTime = 5;
 
     [SerializeField]
-    private float SpawnDelay = 2;
+    private float SpawnDelay = 5;
 
     [SerializeField]
     private int MaxEnemySpawn = 10;

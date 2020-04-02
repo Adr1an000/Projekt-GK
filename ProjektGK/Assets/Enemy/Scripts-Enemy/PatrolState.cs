@@ -7,7 +7,7 @@ public class PatrolState : EnemyBaseState
 {
     private Vector3? destination; // enemy destination
 
-    private readonly LayerMask layerMask = LayerMask.NameToLayer("Walls"); // layer mask
+    private readonly LayerMask layerMask = LayerMask.NameToLayer("Wall"); // layer mask
 
     private EnemyAI enemyAI; // enemyAI
 
@@ -17,21 +17,25 @@ public class PatrolState : EnemyBaseState
 
     private int failureRandomDestinationCounter = 0;
 
-    //constructor
+    private Vector3 previousPosition;
+    private float curSpeed;
+
     public PatrolState(EnemyAI _enemyAI) : base(_enemyAI.gameObject)
     {
         enemyAI = _enemyAI;
     }
 
-    //this operates like Update() function
     public override Type StatePerform()
     {
+        //    Debug.Log("PATROL");
+
+        UpdateAnimation();
+
         //check for target
         Transform chaseTarget = CheckForTarget();
+
         if (chaseTarget != null)
         {
-           enemyAI.SetTarget(chaseTarget);
-
            return (typeof(ChaseState));
         }
 
@@ -94,5 +98,17 @@ public class PatrolState : EnemyBaseState
         direction = Vector3.Normalize(destination.Value - transform.position);
         direction = new Vector3(direction.x, 0f, direction.z);
         desiredRotation = Quaternion.LookRotation(direction);
+    }
+
+    public void UpdateAnimation()
+    {
+        Vector3 curMove = transform.position - previousPosition;
+        curSpeed = curMove.magnitude / Time.deltaTime;
+        previousPosition = transform.position;
+
+        enemyAI.Anim.SetFloat("bodySpeed", curSpeed);
+     //   enemyAI.Anim.SetFloat("run", curSpeed);
+
+        Debug.Log(curSpeed);
     }
 }
