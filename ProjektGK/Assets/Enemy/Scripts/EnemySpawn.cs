@@ -22,17 +22,19 @@ public class EnemySpawn : MonoBehaviour
 
     private GameObject CounterText;
     
-    // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("SpawnEnemy", SpawnTime, SpawnDelay);
         CounterText = GameObject.Find("EnemyCounter");
-        CounterText.GetComponent<TextMesh>().text = "10";
+        CounterText.GetComponent<TextMesh>().text = MaxEnemySpawn.ToString();
     }
 
     public void SpawnEnemy()
     {
-        Instantiate(SpawnedEnemy, transform.position, transform.rotation);
+        var rotate = new Quaternion(transform.rotation.x, transform.rotation.y + 180, transform.rotation.z, transform.rotation.w);
+        var position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 2);
+
+        Instantiate(SpawnedEnemy, position, rotate);
         EnemyFromPortal++;
 
         CounterText.GetComponent<TextMesh>().text = (MaxEnemySpawn - EnemyFromPortal).ToString();

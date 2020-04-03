@@ -7,6 +7,10 @@ public class SpawnState : EnemyBaseState
 {
     private EnemyAI enemyAI; // enemyAI
 
+    private bool startAnim = true;
+
+    private float animCounter = 0;
+
     public SpawnState(EnemyAI _enemyAI) : base(_enemyAI.gameObject)
     {
         enemyAI = _enemyAI;
@@ -14,17 +18,27 @@ public class SpawnState : EnemyBaseState
 
     public override Type StatePerform()
     {
+        animCounter += Time.deltaTime;
 
-        Debug.Log("SPAWN STATE");
-
-        if(!(enemyAI.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1))
+        if(startAnim && animCounter > 10)
         {
-            Debug.Log("JEST ANIMACJA SPAWN");
+            enemyAI.Anim.Play("SPAWN");
 
-            return null;
+            Debug.Log("From START!");
+
+            startAnim = false;
         }
 
-        Debug.Log("KONIEC ANIMACJA SPAWN");
+        if(!startAnim)
+        {
+            return null;
+        }    
+
+        
+        if(!(enemyAI.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1))
+        {
+            return null;
+        }
 
         enemyAI.Anim.SetBool("isSpawned", true);
 
