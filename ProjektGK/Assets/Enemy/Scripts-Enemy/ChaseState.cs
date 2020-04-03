@@ -29,19 +29,27 @@ public class ChaseState : EnemyBaseState
             return typeof(PatrolState);
         }
 
-        if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < enemyAI.AttackRange / 2)
+        if(Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position) < enemyAI.AttackRange)
         {
             enemyAI.AgentPath.ResetPath();
+            enemyAI.AgentPath.velocity = Vector3.zero;
+            enemyAI.AgentPath.isStopped = true;
 
             enemyAI.Anim.SetBool("isAttacking", true);
 
+            StopAnimation();
             return typeof(AttackState);
         }
 
         return null;
     }
 
-    public void UpdateAnimation()
+    private void StopAnimation()
+    {
+        enemyAI.Anim.SetFloat("bodySpeed", 0);
+    }
+
+    private void UpdateAnimation()
     {
         Vector3 curMove = transform.position - previousPosition;
         curSpeed = curMove.magnitude / Time.deltaTime;

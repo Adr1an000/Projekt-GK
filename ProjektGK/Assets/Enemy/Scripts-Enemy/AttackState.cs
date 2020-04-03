@@ -9,6 +9,10 @@ public class AttackState : EnemyBaseState
 
     private float decisionTimer;
 
+    private float rotateToPlayerTimer;
+
+    private float rotateToPlayerMax = 0.1F;
+
     private float decisionTimerMax = 0.25F;
 
     private bool calculateRandomDir = false;
@@ -34,41 +38,12 @@ public class AttackState : EnemyBaseState
 
     private void FacePlayer()
     {
-        float angle = Quaternion.FromToRotation(Vector3.up, enemyAI.PlayerTarget.transform.position - transform.position).eulerAngles.y;
+        var targetDirection = enemyAI.PlayerTarget.transform.position - transform.position;
+        var targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
 
-        if (angle > 60 && angle < 300)
-        {
-            Vector3 direction = (enemyAI.PlayerTarget.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * enemyAI.FacePlayerFactor);
-        }
-        Debug.Log("ANGLE: " + angle);
-      
-        
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * enemyAI.FacePlayerFactor);
     }
 
-    float atan2Approximation(float y, float x) // http://http.developer.nvidia.com/Cg/atan2.html
-    {
-        float t0, t1, t2, t3, t4;
-        t3 = Mathf.Abs(x);
-        t1 = Mathf.Abs(y);
-        t0 = Mathf.Max(t3, t1);
-        t1 = Mathf.Min(t3, t1);
-        t3 = 1f / t0;
-        t3 = t1 * t3;
-        t4 = t3 * t3;
-        t0 = -0.013480470f;
-        t0 = t0 * t4 + 0.057477314f;
-        t0 = t0 * t4 - 0.121239071f;
-        t0 = t0 * t4 + 0.195635925f;
-        t0 = t0 * t4 - 0.332994597f;
-        t0 = t0 * t4 + 0.999995630f;
-        t3 = t0 * t3;
-        t3 = (Mathf.Abs(y) > Mathf.Abs(x)) ? 1.570796327f - t3 : t3;
-        t3 = (x < 0) ? 3.141592654f - t3 : t3;
-        t3 = (y < 0) ? -t3 : t3;
-        return t3;
-    }
 
     public override Type StatePerform()
     {
@@ -76,31 +51,54 @@ public class AttackState : EnemyBaseState
 
         UpdateAnimation();
 
-        float distance = Vector3.Distance(transform.position, enemyAI.PlayerTarget.transform.position);
+        float distance = Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position);
 
         decisionTimer += Time.deltaTime;
+        rotateToPlayerTimer += Time.deltaTime;
 
-        
 
-        if(decisionTimer > decisionTimerMax)
+        if (decisionTimer > decisionTimerMax)
         {
             decisionTimer = 0;
             ChooseMovement();
         }
 
-    //    MoveToDirection();
+        if (rotateToPlayerTimer > rotateToPlayerMax)
+        {
+            rotateToPlayerTimer = 0;
+            FacePlayer();
+        }
 
-        if(distance < enemyAI.AttackRange / 3)
+        MoveToDirection();
+
+
+        if (distance < enemyAI.AttackRange / 6)
         {
             Vector3 dirToPlayer = transform.position - enemyAI.PlayerTarget.transform.position;
-            Vector3 newPos = transform.position + dirToPlayer;
+            Vector3 newPos = (transform.position + dirToPlayer) /2;
+            enemyAI.AgentPath.isStopped = false;
+
+            Debug.Log("Przeciwnik za blisko");
 
             enemyAI.AgentPath.SetDestination(newPos);
+        }
+        else if (distance > enemyAI.AttackRange / 3)
+        {
+            enemyAI.AgentPath.SetDestination(enemyAI.PlayerTarget.transform.position);
+            enemyAI.AgentPath.isStopped = false;
+
+            Debug.Log("Przeciwnik za daleko");
+
+            if (distance < enemyAI.AttackRange / 5)
+            {
+                enemyAI.AgentPath.ResetPath();
+            }
         }
         else
         {
             FacePlayer();
         }
+
 
         if (distance > enemyAI.AttackRange)
         {
@@ -111,14 +109,17 @@ public class AttackState : EnemyBaseState
             return typeof(ChaseState);
         }
 
+
+
         return null;
     }
 
 
     private void MoveToDirection()
     {
+        enemyAI.AgentPath.isStopped = false;
 
-        switch(decision)
+        switch (decision)
         {
             case MovementDecision.RANDOM_DIRECTION:
                 RandomDirection();
@@ -134,7 +135,7 @@ public class AttackState : EnemyBaseState
 
     private void RandomDirection()
     {
-        if(calculateRandomDir == true)
+        if (calculateRandomDir == true)
         {
             float xPos = enemyAI.transform.position.x;
             float zPos = enemyAI.transform.position.z;
@@ -148,15 +149,17 @@ public class AttackState : EnemyBaseState
 
             calculateRandomDir = false;
         }
-      
+
     }
 
     private void ChooseMovement()
     {
-        var dec = UnityEngine.Random.Range(0, 3);
+        var dec = UnityEngine.Random.Range(-1, 4);
 
-        switch(dec)
+        switch (dec)
         {
+
+
             case 0:
                 decision = MovementDecision.NOTHING;
                 break;
@@ -193,10 +196,12 @@ public class AttackState : EnemyBaseState
         curSpeed = curMove.magnitude / Time.deltaTime;
         previousPosition = transform.position;
 
-        enemyAI.Anim.SetFloat("bodySpeed", curSpeed);
+        Debug.Log("SPEED: " + curSpeed);
 
-        //Debug.Log(curSpeed);
+        enemyAI.Anim.SetFloat("bodySpeed", curSpeed);
     }
+
+
     /*
     void FireBullet()
     {

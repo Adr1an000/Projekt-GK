@@ -22,9 +22,10 @@ public class EnemyStateMachine : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        
         if (CurrentState == null) // set state
         {
-            CurrentState = enemyStates.Values.First();
+            CurrentState = enemyStates[typeof(SpawnState)];
         }
 
         Type nextState = CurrentState?.StatePerform(); // get next state
