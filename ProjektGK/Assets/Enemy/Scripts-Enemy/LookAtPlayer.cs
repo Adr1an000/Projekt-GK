@@ -31,8 +31,8 @@ public class LookAtPlayer : MonoBehaviour
 
         // bone.transform.Rotate(0, 30, 0);
 
-       }
-       
+        }
+
     }
 
 

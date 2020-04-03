@@ -7,8 +7,6 @@ public class PatrolState : EnemyBaseState
 {
     private Vector3? destination; // enemy destination
 
-    private readonly LayerMask layerMask = LayerMask.NameToLayer("Wall"); // layer mask
-
     private EnemyAI enemyAI; // enemyAI
 
     private Quaternion desiredRotation; // targetRotation;
@@ -86,7 +84,7 @@ public class PatrolState : EnemyBaseState
     private bool IsForwardBlocked()
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        return Physics.SphereCast(ray, 0.5f, enemyAI.ObstacleReverseRange, layerMask);
+        return Physics.SphereCast(ray, 0.5f, enemyAI.ObstacleReverseRange, enemyAI.layerMask);
     }
 
     void FindRandomDestination()
