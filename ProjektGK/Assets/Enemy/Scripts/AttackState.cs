@@ -11,7 +11,7 @@ public class AttackState : EnemyBaseState
 
     private float rotateToPlayerTimer;
 
-    private float rotateToPlayerMax = 0.1F;
+    private float rotateToPlayerMax = 0.01F;
 
     private float decisionTimerMax = 0.25F;
 
@@ -78,8 +78,6 @@ public class AttackState : EnemyBaseState
             Vector3 newPos = (transform.position + dirToPlayer) /2;
             enemyAI.AgentPath.isStopped = false;
 
-            Debug.Log("Przeciwnik za blisko");
-
             enemyAI.AgentPath.SetDestination(newPos);
         }
         else if (distance > enemyAI.AttackRange / 3)
@@ -87,7 +85,6 @@ public class AttackState : EnemyBaseState
             enemyAI.AgentPath.SetDestination(enemyAI.PlayerTarget.transform.position);
             enemyAI.AgentPath.isStopped = false;
 
-            Debug.Log("Przeciwnik za daleko");
 
             if (distance < enemyAI.AttackRange / 5)
             {
@@ -158,8 +155,6 @@ public class AttackState : EnemyBaseState
 
         switch (dec)
         {
-
-
             case 0:
                 decision = MovementDecision.NOTHING;
                 break;
@@ -196,8 +191,6 @@ public class AttackState : EnemyBaseState
         curSpeed = curMove.magnitude / Time.deltaTime;
         previousPosition = transform.position;
 
-        Debug.Log("SPEED: " + curSpeed);
-
         if(curSpeed > 6)
         {
             enemyAI.Anim.speed = curSpeed / 5;
@@ -208,7 +201,6 @@ public class AttackState : EnemyBaseState
         }
 
         enemyAI.Anim.SetFloat("bodySpeed", curSpeed);
-        
     }
 
 

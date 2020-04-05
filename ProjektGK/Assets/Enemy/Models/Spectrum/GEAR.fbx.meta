@@ -1,8 +1,14 @@
 fileFormatVersion: 2
-guid: 8768e23c85ccc9443bb291ed9d56ec26
+guid: 49beff130e3b88e479004bd415998a26
 ModelImporter:
   serializedVersion: 19300
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 4281290985646911656
+    second: Gear|GearAction
+  - first:
+      74: -2948529178310712712
+    second: Gear|GearAction.001
   externalObjects: {}
   materials:
     materialImportMode: 1

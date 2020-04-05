@@ -33,7 +33,7 @@ public class LookAtPlayer : MonoBehaviour
 
             if (arm)
             {
-                bone.transform.Rotate(90, 0, 0);
+                bone.transform.Rotate(90, -20, 0);
             }
         }
 

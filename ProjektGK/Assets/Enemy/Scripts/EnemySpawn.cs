@@ -20,12 +20,12 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField]
     public int EnemyFromPortal = 0;
 
-    private GameObject CounterText;
+    public GameObject CounterText;
     
     void Start()
     {
         InvokeRepeating("SpawnEnemy", SpawnTime, SpawnDelay);
-        CounterText = GameObject.Find("EnemyCounter");
+        
         CounterText.GetComponent<TextMesh>().text = MaxEnemySpawn.ToString();
     }
 
