@@ -47,7 +47,6 @@ public class AttackState : EnemyBaseState
 
     public override Type StatePerform()
     {
-        //   Debug.Log("ATTACK");
 
         UpdateAnimation();
 

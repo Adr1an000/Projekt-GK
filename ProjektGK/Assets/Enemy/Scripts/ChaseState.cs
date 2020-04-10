@@ -15,8 +15,6 @@ public class ChaseState : EnemyBaseState
 
     public override Type StatePerform()
     {
-        //   Debug.Log("CHASE");
-
         UpdateAnimation();
 
         enemyAI.AgentPath.SetDestination(enemyAI.PlayerTarget.transform.position);
@@ -66,7 +64,5 @@ public class ChaseState : EnemyBaseState
         {
             enemyAI.Anim.speed = 1;
         }
-
-        Debug.Log(curSpeed);
     }
 }
