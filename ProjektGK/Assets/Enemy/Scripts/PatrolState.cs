@@ -114,7 +114,5 @@ public class PatrolState : EnemyBaseState
         {
             enemyAI.Anim.speed = 1;
         }
-
-        Debug.Log(curSpeed);
     }
 }

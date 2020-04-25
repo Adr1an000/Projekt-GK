@@ -24,6 +24,17 @@ public class TimerPush : MonoBehaviour
 
     }
 
+    public void AddTime(int seconds)
+    {
+        secondsLeft += seconds;
+
+        while(secondsLeft >= 60)
+        {
+            secondsLeft -= 60;
+            minutesLeft++;
+        }
+    }
+
     void Update()
     {
         if (startTick && (minutesLeft > 0 || secondsLeft > 0))
