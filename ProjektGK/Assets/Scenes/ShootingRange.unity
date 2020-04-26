@@ -471,7 +471,9 @@ MonoBehaviour:
   - {fileID: 421657753}
   - {fileID: 976056459}
   slotCount: 4
-  cube: {fileID: 507507203}
+  ammo: 100
+  unlimitedAmmo: 0
+  weaponsUseAmmo: 1
 --- !u!1 &277433947
 GameObject:
   m_ObjectHideFlags: 0
