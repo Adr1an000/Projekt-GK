@@ -37,6 +37,7 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmo;
     public int Affiliation { get; set; }
+    public bool UseAmmo { get; set; } = true;
 
     public void PressTrigger()
     {
@@ -126,7 +127,7 @@ public class Weapon : MonoBehaviour
             {
                 shouldShoot = false;
             }
-            if (timeSinceLastShot > 1f / fireRate && currentAmmo >= ammoPerShot)
+            if (timeSinceLastShot > 1f / fireRate && (currentAmmo >= ammoPerShot || !UseAmmo))
             {
                 timeSinceLastShot = 0f;
 
@@ -135,7 +136,8 @@ public class Weapon : MonoBehaviour
                 {
                     muzzleFlash.Play();
                 }
-                currentAmmo -= ammoPerShot;
+                if (UseAmmo)
+                    currentAmmo -= ammoPerShot;
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
                     ShootProjectile();
