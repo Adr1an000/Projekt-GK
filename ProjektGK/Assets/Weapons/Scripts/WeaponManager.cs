@@ -11,6 +11,7 @@ public class WeaponManager : MonoBehaviour
     private int affiliation;
 
     public int ammo = 100;
+    public bool unlimitedAmmo = false;
 
     public Weapon GetCurrentWeapon()
     {
@@ -91,14 +92,12 @@ public class WeaponManager : MonoBehaviour
         Debug.Log( SetCurrentWeapon(0) );
     }
 
-    private float time = 0;
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        if (time > 1)
+        if (unlimitedAmmo && ammo < 1000)
         {
-            Debug.Log(GetCurrentWeapon().CurrentAmmo() + "/" + ammo);
+            ammo = 1000;
         }
     }
 }
