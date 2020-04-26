@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour
     public float range;
     public bool automatic;
     public int numberOfProjectiles = 1;
+    public int magazineSize;
+    public int ammoPerShot;
 
     [Header("Appearance")]
     [Tooltip("Projectile that will be spawned with each shot")]
@@ -33,6 +35,7 @@ public class Weapon : MonoBehaviour
     private float timeSinceLastShot = 0f;
     private bool shouldShoot = false;
 
+    private int currentAmmo;
     public int Affiliation { get; set; }
 
     public void PressTrigger()
@@ -58,6 +61,23 @@ public class Weapon : MonoBehaviour
         shouldShoot = false;
     }
 
+    public bool IsInRange(Transform target)
+    {
+        return (target.position - barrelEnd.position).sqrMagnitude < range * range;
+    }
+    public bool HasLineOfSight(Transform target)
+    {
+        RaycastHit hitInfo = new RaycastHit();
+        if (Physics.Linecast(barrelEnd.position, target.position, out hitInfo))
+        {
+            if (hitInfo.collider.gameObject != target.gameObject)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void Drop()
     {
 
@@ -67,11 +87,29 @@ public class Weapon : MonoBehaviour
     {
 
     }
+
+    public int CurrentAmmo()
+    {
+        return currentAmmo;
+    }
+
+    public bool NeedsReload()
+    {
+        return currentAmmo < ammoPerShot;
+    }
+    public int Reload(int ammoCount)
+    {
+        int previousAmmo = currentAmmo;
+        currentAmmo += ammoCount;
+        if (currentAmmo > magazineSize)
+            currentAmmo = magazineSize;
+        return currentAmmo - previousAmmo;
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentAmmo = magazineSize;
     }
 
     // Update is called once per frame
@@ -88,7 +126,7 @@ public class Weapon : MonoBehaviour
             {
                 shouldShoot = false;
             }
-            if (timeSinceLastShot > 1f / fireRate)
+            if (timeSinceLastShot > 1f / fireRate && currentAmmo >= ammoPerShot)
             {
                 timeSinceLastShot = 0f;
 
@@ -97,6 +135,7 @@ public class Weapon : MonoBehaviour
                 {
                     muzzleFlash.Play();
                 }
+                currentAmmo -= ammoPerShot;
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
                     ShootProjectile();
