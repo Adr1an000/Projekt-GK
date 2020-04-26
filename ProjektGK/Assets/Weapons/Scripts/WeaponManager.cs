@@ -12,6 +12,7 @@ public class WeaponManager : MonoBehaviour
 
     public int ammo = 100;
     public bool unlimitedAmmo = false;
+    public bool weaponsUseAmmo = true;
 
     public Weapon GetCurrentWeapon()
     {
@@ -84,6 +85,7 @@ public class WeaponManager : MonoBehaviour
             if (i < startingWeapons.Count)
             {
                 startingWeapons[i].Affiliation = affiliation;
+                startingWeapons[i].UseAmmo = weaponsUseAmmo;
                 weapons.Add(startingWeapons[i]);
             }
             else
