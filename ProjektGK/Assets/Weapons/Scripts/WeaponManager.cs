@@ -6,9 +6,11 @@ public class WeaponManager : MonoBehaviour
 {
     public List<Weapon> startingWeapons;
     public int slotCount;
-    private List<Weapon> weapons = new List<Weapon>();
+    public List<Weapon> weapons { get; } = new List<Weapon>();
     private int currentWeapon = -1;
     private int affiliation;
+
+    public int ammo = 100;
 
     public Weapon GetCurrentWeapon()
     {
@@ -54,6 +56,16 @@ public class WeaponManager : MonoBehaviour
         return true;
     }
 
+    public bool NeedsReload()
+    {
+        return GetCurrentWeapon().NeedsReload();
+    }
+
+    public void Reload()
+    {
+        ammo -= GetCurrentWeapon().Reload(ammo);
+    }
+
     public int FindFreeSlot()
     {
         for (int i = 0; i < weapons.Count; i++)
@@ -79,9 +91,14 @@ public class WeaponManager : MonoBehaviour
         Debug.Log( SetCurrentWeapon(0) );
     }
 
+    private float time = 0;
     // Update is called once per frame
     void Update()
     {
-        
+        time += Time.deltaTime;
+        if (time > 1)
+        {
+            Debug.Log(GetCurrentWeapon().CurrentAmmo() + "/" + ammo);
+        }
     }
 }

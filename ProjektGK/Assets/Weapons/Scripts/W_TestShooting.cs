@@ -12,6 +12,7 @@ public class W_TestShooting : MonoBehaviour
     {
         keyMap.Add(KeyCode.Alpha1, 0);
         keyMap.Add(KeyCode.Alpha2, 1);
+        keyMap.Add(KeyCode.Alpha3, 2);
         if (!manager)
         {
             manager = GetComponentInChildren<WeaponManager>();
@@ -35,7 +36,14 @@ public class W_TestShooting : MonoBehaviour
             {
                 manager.GetCurrentWeapon().ReleaseTrigger();
             }
-        } 
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (manager)
+            {
+                manager.Reload();
+            }
+        }
         else
         {
             foreach (var pair in keyMap)

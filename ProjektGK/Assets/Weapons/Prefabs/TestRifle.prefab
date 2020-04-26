@@ -4867,6 +4867,8 @@ MonoBehaviour:
   range: 50
   automatic: 1
   numberOfProjectiles: 1
+  magazineSize: 20
+  ammoPerShot: 1
   projectile: {fileID: 727862859670849762, guid: f370c912ed7af5c46986d1b7f6e495fd,
     type: 3}
   muzzleFlash: {fileID: 3134325852886366616}
