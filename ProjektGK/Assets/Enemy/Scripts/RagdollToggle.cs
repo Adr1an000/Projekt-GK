@@ -12,6 +12,7 @@ public class RagdollToggle : MonoBehaviour
     public EnemyStateMachine EnemyStateMachine;
     public LookAtPlayer LookAtPlayer;
     public NavMeshAgent Agent;
+    public Collider MainCollider;
 
     public Collider[] ChildrenCollider;
     public Rigidbody[] ChildrenRigibody;
@@ -75,5 +76,7 @@ public class RagdollToggle : MonoBehaviour
         enemyAI.enabled = !active;
         EnemyStateMachine.enabled = !active;
         LookAtPlayer.enabled = !active;
+
+        MainCollider.enabled = !active;
     }
 }

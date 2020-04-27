@@ -7,9 +7,9 @@ using System.Linq;
 
 public class EnemyStateMachine : MonoBehaviour
 {
-    private Dictionary<Type, EnemyBaseState> enemyStates; // dictionary of enemy states
+    public Dictionary<Type, EnemyBaseState> enemyStates; // dictionary of enemy states
 
-    public EnemyBaseState CurrentState { get; private set; } // current enemy state
+    public EnemyBaseState CurrentState { get; set; } // current enemy state
 
     public event Action<EnemyBaseState> OnStateChanged; // event state enemy changed
 
