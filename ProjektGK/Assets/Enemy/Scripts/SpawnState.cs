@@ -24,8 +24,6 @@ public class SpawnState : EnemyBaseState
         {
             enemyAI.Anim.Play("SPAWN");
 
-            Debug.Log("From START!");
-
             startAnim = false;
         }
 

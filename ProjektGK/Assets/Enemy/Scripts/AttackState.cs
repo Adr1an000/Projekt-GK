@@ -21,13 +21,6 @@ public class AttackState : EnemyBaseState
 
     MovementDecision decision = MovementDecision.NOTHING;
 
-    // shooting
-    private float timerShots;
-
-    private float timeBtwShots = 0.25f;
-
-    private float fireRadius = 25f;
-
     private Vector3 previousPosition;
     private float curSpeed;
 
@@ -47,14 +40,12 @@ public class AttackState : EnemyBaseState
 
     public override Type StatePerform()
     {
-
         UpdateAnimation();
 
         float distance = Vector3.Distance(enemyAI.transform.position, enemyAI.PlayerTarget.transform.position);
 
         decisionTimer += Time.deltaTime;
         rotateToPlayerTimer += Time.deltaTime;
-
 
         if (decisionTimer > decisionTimerMax)
         {
@@ -101,10 +92,19 @@ public class AttackState : EnemyBaseState
             enemyAI.AgentPath.isStopped = true;
             enemyAI.AgentPath.ResetPath();
 
+            if(enemyAI.Weapon != null)
+            {
+                enemyAI.Weapon.ReleaseTrigger();
+            }
+
             enemyAI.Anim.SetBool("isAttacking", false);
             return typeof(ChaseState);
         }
 
+        if (enemyAI.Weapon != null)
+        {
+            FireBullet();
+        }
 
 
         return null;
@@ -203,31 +203,24 @@ public class AttackState : EnemyBaseState
     }
 
 
-    /*
+    
     void FireBullet()
     {
         RaycastHit hitPlayer;
-        Ray playerPos = new Ray(enemyAI.transform.position, enemyAI.transform.forward);
+        Ray playerPos = new Ray(enemyAI.Weapon.transform.position, enemyAI.Weapon.transform.forward);
 
-        if(Physics.SphereCast(playerPos, 0.25f, out hitPlayer, fireRadius))
+        if(Physics.SphereCast(playerPos, 0.05f, out hitPlayer, enemyAI.Weapon.range))
         {
-            if(timerShots <= 0 && hitPlayer.transform.tag == "Player")
-            {
-                // shoot here code
-                enemyAI.weapon.PressTrigger();
 
-                timerShots = timeBtwShots;
+            if(hitPlayer.transform.tag == "Player")
+            {
+                enemyAI.Weapon.PressTrigger();
             }
             else
             {
-                enemyAI.weapon.ReleaseTrigger();
-                timerShots -= Time.deltaTime;
+                enemyAI.Weapon.ReleaseTrigger();
             }
         }
-        else
-        {
-            enemyAI.weapon.ReleaseTrigger();
-        }
     }
-    */
+    
 }
