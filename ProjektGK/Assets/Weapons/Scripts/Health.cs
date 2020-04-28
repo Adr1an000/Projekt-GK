@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Health : MonoBehaviour
     public int affiliation = 0;
     public bool friendlyFire = false;
     public bool destroyOnDeath = true;
+    public Slider healthBar;
 
     [Tooltip("Callbacks called when health falls below zero")]
     public UnityEvent onDeath;
@@ -26,6 +28,7 @@ public class Health : MonoBehaviour
         {
             currentHealth -= damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+            updateHealthBar();
             if (onDamage != null)
                 onDamage.Invoke(damage);
             if (currentHealth <= 0)
@@ -43,6 +46,14 @@ public class Health : MonoBehaviour
         if (onHeal != null)
             onHeal.Invoke(amount);
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        updateHealthBar();
+    }
+    void updateHealthBar()
+    {
+        if (healthBar)
+        {
+            healthBar.value = currentHealth / maxHealth;
+        }
     }
     // Start is called before the first frame update
     void Start()

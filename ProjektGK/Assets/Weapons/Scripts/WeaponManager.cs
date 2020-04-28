@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class WeaponManager : MonoBehaviour
     public int ammo = 100;
     public bool unlimitedAmmo = false;
     public bool weaponsUseAmmo = true;
+
+    public Text current;
+    public Text rest;
+    public Image crosshair;
+    public Sprite defaultCrosshair;
 
     public Weapon GetCurrentWeapon()
     {
@@ -34,6 +40,7 @@ public class WeaponManager : MonoBehaviour
             currentWeapon = slot;
             GetCurrentWeapon().Equip();
         }
+        UpdateCrosshairUI();
         return true;
     }
 
@@ -94,6 +101,31 @@ public class WeaponManager : MonoBehaviour
         Debug.Log( SetCurrentWeapon(0) );
     }
 
+    void UpdateAmmoUI()
+    {
+        if (current)
+        {
+            current.text = $"{GetCurrentWeapon().CurrentAmmo()}";
+        }
+        if (rest)
+        {
+            rest.text = $"{ammo}";
+        }
+    }
+    void UpdateCrosshairUI()
+    {
+        if (crosshair)
+        {
+            if (GetCurrentWeapon().Crosshair)
+            {
+                crosshair.sprite = GetCurrentWeapon().Crosshair;
+            }
+            else
+            {
+                crosshair.sprite = defaultCrosshair;
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -101,5 +133,6 @@ public class WeaponManager : MonoBehaviour
         {
             ammo = 1000;
         }
+        UpdateAmmoUI();
     }
 }
