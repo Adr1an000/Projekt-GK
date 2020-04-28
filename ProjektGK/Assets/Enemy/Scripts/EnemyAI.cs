@@ -53,6 +53,12 @@ public class EnemyAI : MonoBehaviour
     public Animator Anim;
 
     [SerializeField]
+    public Health health;
+
+    [SerializeField]
+    public LookAtPlayer lookAtPlayer;
+
+    [SerializeField]
     public LayerMask layerMask; // layer mask
 
     // init enemy
@@ -83,6 +89,23 @@ public class EnemyAI : MonoBehaviour
         AgentPath.updateRotation = true;
     }
 
+    private void Update()
+    {
+        if(health != null)
+        {
+            if (!health.alive)
+            {
+                lookAtPlayer.enabled = false;
+                EnemyStateMachine.CurrentState = EnemyStateMachine.enemyStates[typeof(DeathState)];
+                if (Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1
+                    && Anim.GetCurrentAnimatorStateInfo(0).IsName("DEATH"))
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
+
     // init behaviour state machine
     private void InitStateMachine()
     {
@@ -91,8 +114,8 @@ public class EnemyAI : MonoBehaviour
             {typeof(SpawnState), new SpawnState(this) }, // spawn state
             { typeof(PatrolState), new PatrolState(this)}, // patrol state
             {typeof(ChaseState), new ChaseState(this) }, // chase player state
-            { typeof(AttackState), new AttackState(this) } // attack player state
-
+            { typeof(AttackState), new AttackState(this) },// attack player state
+            { typeof(DeathState), new DeathState(this) } // death state
         };
         GetComponent<EnemyStateMachine>().SetState(states);
     }
