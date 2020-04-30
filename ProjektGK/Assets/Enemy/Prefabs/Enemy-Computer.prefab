@@ -223,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 4953089842455402217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 85.1121, y: -14.427082, z: -27.225384}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4953089843589669685}
   - {fileID: 4953089843129081278}
@@ -292,6 +292,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 524288
+  FloatingTextPrefab: {fileID: 7205369493832338824, guid: 883cf8a1e9b193245b47733f8f7f4227,
+    type: 3}
 --- !u!95 &4953089842455402213
 Animator:
   serializedVersion: 3
@@ -368,6 +370,7 @@ MonoBehaviour:
   affiliation: 0
   friendlyFire: 0
   destroyOnDeath: 0
+  healthBar: {fileID: 0}
   onDeath:
     m_PersistentCalls:
       m_Calls:
