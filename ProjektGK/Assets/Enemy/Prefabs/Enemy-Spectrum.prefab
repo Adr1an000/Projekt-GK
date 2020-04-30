@@ -132,6 +132,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 524288
+  FloatingTextPrefab: {fileID: 7205369493832338824, guid: 883cf8a1e9b193245b47733f8f7f4227,
+    type: 3}
 --- !u!95 &8422798900082874329
 Animator:
   serializedVersion: 3
@@ -208,6 +210,7 @@ MonoBehaviour:
   affiliation: 0
   friendlyFire: 0
   destroyOnDeath: 0
+  healthBar: {fileID: 0}
   onDeath:
     m_PersistentCalls:
       m_Calls:
