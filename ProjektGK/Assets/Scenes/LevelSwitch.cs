@@ -11,7 +11,7 @@ public class LevelSwitch : MonoBehaviour
     {
         if (other.tag == "Payload")
         {
-            animator.SetTrigger("FadeOut");
+            animator.SetBool("FadeOut", true);
         }
     }
 

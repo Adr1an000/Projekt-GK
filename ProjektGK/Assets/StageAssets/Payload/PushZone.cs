@@ -6,6 +6,8 @@ public class PushZone : MonoBehaviour
 {
     public CartFollowPath cartFollowPath;
 
+    public int CartSpeed = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,7 @@ public class PushZone : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
-            cartFollowPath.speed = 20;
+            cartFollowPath.speed = CartSpeed;
         }
     }
 
