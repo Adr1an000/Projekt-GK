@@ -21,20 +21,34 @@ public class EnemySpawn : MonoBehaviour
     public int EnemyFromPortal = 0;
 
     public GameObject CounterText;
+
+    public Transform spawnPosition;
+
+    public GameObject PortalGateObject;
+
+    public bool startSpawning = false;
     
-    void Start()
+
+    public void InvokeSpawnEnemy()
     {
-        InvokeRepeating("SpawnEnemy", SpawnTime, SpawnDelay);
-        
-        CounterText.GetComponent<TextMesh>().text = MaxEnemySpawn.ToString();
+        if(!startSpawning)
+        {
+            InvokeRepeating("SpawnEnemy", SpawnTime, SpawnDelay);
+
+            CounterText.GetComponent<TextMesh>().text = MaxEnemySpawn.ToString();
+
+            PortalGateObject.SetActive(true);
+
+            startSpawning = true;
+        }
     }
 
     public void SpawnEnemy()
     {
         var rotate = new Quaternion(transform.rotation.x, transform.rotation.y + 180, transform.rotation.z, transform.rotation.w);
-        var position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 2);
+       
 
-        Instantiate(SpawnedEnemy, position, rotate);
+        Instantiate(SpawnedEnemy, spawnPosition.position, rotate);
         EnemyFromPortal++;
 
         CounterText.GetComponent<TextMesh>().text = (MaxEnemySpawn - EnemyFromPortal).ToString();
@@ -42,6 +56,7 @@ public class EnemySpawn : MonoBehaviour
         if(EnemyFromPortal >= MaxEnemySpawn)
         {
             CancelInvoke("SpawnEnemy");
+            PortalGateObject.SetActive(false);
         }
     }
 }

@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
+using TMPro;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 public class EnemyAI : MonoBehaviour
 {
-    // hidden from gui Unity
-    public bool IsHiding { get; set; } = false; // enemy near "COVER" object
-
     public GameObject PlayerTarget { get; private set; } // player object
 
     public bool CoverIsClose { get; set; } // is cover in reach?
@@ -26,7 +24,7 @@ public class EnemyAI : MonoBehaviour
 
 
     [SerializeField]
-    public float PatrolSpeed  = 2.0f; // speed of patrol movement
+    public float PatrolSpeed = 2.0f; // speed of patrol movement
 
     [SerializeField]
     public float MinDistanceFromPlayer = 30.0f; // min distance from player to take action
@@ -61,29 +59,39 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     public LayerMask layerMask; // layer mask
 
+    [SerializeField]
+    public GameObject FloatingTextPrefab;
+
+    private int lastHealth;
+
     // init enemy
     private void Awake()
     {
         InitStateMachine(); // initialise enemy's state machine
 
-        if(!PlayerTarget)
+        if (!PlayerTarget)
         {
             PlayerTarget = GameObject.Find("Player");
         }
 
-        if(!Anim)
+        if (!Anim)
         {
             Anim = GetComponent<Animator>();
         }
 
-        if(!AgentPath)
+        if (!AgentPath)
         {
             AgentPath = GetComponent<NavMeshAgent>();
         }
 
-        if(!Weapon)
+        if (!Weapon)
         {
             Weapon = GetComponentInChildren<Weapon>();
+        }
+
+        if (!health)
+        {
+            lastHealth = health.currentHealth;
         }
 
         AgentPath.updateRotation = true;
@@ -91,7 +99,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        if(health != null)
+        if (health != null)
         {
             if (!health.alive)
             {
@@ -103,7 +111,28 @@ public class EnemyAI : MonoBehaviour
                     Destroy(gameObject);
                 }
             }
+
+
+            if (lastHealth != health.currentHealth && FloatingTextPrefab != null)
+            {
+                ShowFloatingText();
+                lastHealth = health.currentHealth;
+
+            }
         }
+    }
+
+    private void ShowFloatingText()
+    {
+        if(lastHealth - health.currentHealth < 0)
+        {
+            return;
+        }
+
+
+        var go = Instantiate(FloatingTextPrefab, transform.position, Quaternion.identity, transform);
+        go.GetComponent<TextMeshPro>().text = (lastHealth - health.currentHealth).ToString();
+
     }
 
     // init behaviour state machine
