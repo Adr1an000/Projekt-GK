@@ -52,7 +52,7 @@ public class Health : MonoBehaviour
     {
         if (healthBar)
         {
-            healthBar.value = currentHealth / maxHealth;
+            healthBar.value = (float) currentHealth / maxHealth;
         }
     }
     // Start is called before the first frame update
