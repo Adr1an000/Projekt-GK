@@ -16,15 +16,20 @@ public class W_PlayerMovement : MonoBehaviour
     bool isGrounded = false;
     bool secondJump = false;
     Vector3 velocity;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-    private void FixedUpdate()
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        var healthPickup = hit.gameObject.GetComponent<HealthPickup>();
+        if (healthPickup)
+        {
+            healthPickup.PickUp(gameObject);
+        }
+        var ammoPickup = hit.gameObject.GetComponent<AmmoPickup>();
+        if (ammoPickup)
+        {
+            ammoPickup.PickUp(gameObject);
+        }
     }
-    // Update is called once per frame
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, distance, groundMask);
