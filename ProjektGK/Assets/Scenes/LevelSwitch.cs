@@ -21,7 +21,7 @@ public class LevelSwitch : MonoBehaviour
                     && animator.GetCurrentAnimatorStateInfo(0).IsName("Fade_OUT"))
         {
 
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(4);
 
         }
     }
