@@ -209,7 +209,7 @@ public class AttackState : EnemyBaseState
         RaycastHit hitPlayer;
         Ray playerPos = new Ray(enemyAI.Weapon.transform.position, enemyAI.Weapon.transform.forward);
 
-        if(Physics.SphereCast(playerPos, 0.05f, out hitPlayer, enemyAI.Weapon.range))
+        if(Physics.SphereCast(playerPos, 0.001f, out hitPlayer, enemyAI.Weapon.range * 5f))
         {
 
             if(hitPlayer.transform.tag == "Player")
