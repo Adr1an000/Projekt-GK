@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     public int affiliation = 0;
     public bool friendlyFire = false;
     public bool destroyOnDeath = true;
+    public bool invincible = false;
     public Slider healthBar;
 
     [Tooltip("Callbacks called when health falls below zero")]
@@ -24,7 +25,7 @@ public class Health : MonoBehaviour
 
     public void DealDamage(int damage, int affiliation)
     {
-        if (friendlyFire || affiliation != this.affiliation)
+        if ((friendlyFire || affiliation != this.affiliation) && !invincible)
         {
             currentHealth -= damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -58,7 +59,7 @@ public class Health : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame

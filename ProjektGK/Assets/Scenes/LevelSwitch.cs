@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelSwitch : MonoBehaviour
 {
+    public string nextScene;
     public Animator animator;
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +22,7 @@ public class LevelSwitch : MonoBehaviour
                     && animator.GetCurrentAnimatorStateInfo(0).IsName("Fade_OUT"))
         {
 
-            SceneManager.LoadScene(4);
+            SceneManager.LoadScene(nextScene);
 
         }
     }

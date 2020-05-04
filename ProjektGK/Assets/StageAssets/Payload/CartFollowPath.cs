@@ -7,6 +7,7 @@ public class CartFollowPath : MonoBehaviour
 
     public Transform[] target;
     public float speed;
+    public PlayerRespawn playerRespawn;
 
     private int current;
 
@@ -37,6 +38,10 @@ public class CartFollowPath : MonoBehaviour
         }
         else
         {
+            if (playerRespawn)
+            {
+                playerRespawn.SetRespawnPoint(target[current]);
+            }
             current = (current + 1) % target.Length;
         }
     }
