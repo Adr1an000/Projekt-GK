@@ -7,23 +7,38 @@ public class LevelSwitch : MonoBehaviour
 {
     public Animator animator;
 
+    public int goToIdLevel;
+
+    public float waitTime = 0;
+
+    private bool sceneWillChange = false;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Payload")
         {
-            animator.SetBool("FadeOut", true);
+            sceneWillChange = true;
         }
     }
 
     private void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1
-                    && animator.GetCurrentAnimatorStateInfo(0).IsName("Fade_OUT"))
+        if(!sceneWillChange)
         {
+            return;
+        }
 
-            SceneManager.LoadScene(4);
+        waitTime -= Time.deltaTime;
 
+        if(waitTime <= 0)
+        {
+            animator.SetBool("FadeOut", true);
+
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1
+            && animator.GetCurrentAnimatorStateInfo(0).IsName("Fade_OUT"))
+            {
+                SceneManager.LoadScene(goToIdLevel);
+            }
         }
     }
-
 }
