@@ -12,6 +12,8 @@ public class AmmoPickup : MonoBehaviour
         if (weaponMngr)
         {
             weaponMngr.ammo += amount;
+            GetComponent<Respawnable>().Respawn();
+            Debug.Log(GetComponent<Respawnable>());
             Destroy(gameObject);
         }
     }

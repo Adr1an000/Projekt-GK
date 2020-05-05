@@ -16,15 +16,15 @@ public class W_PlayerMovement : MonoBehaviour
     bool isGrounded = false;
     bool secondJump = false;
     Vector3 velocity;
-
+    
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        var healthPickup = hit.gameObject.GetComponent<HealthPickup>();
+        var healthPickup = hit.gameObject.GetComponentInParent<HealthPickup>();
         if (healthPickup)
         {
             healthPickup.PickUp(gameObject);
         }
-        var ammoPickup = hit.gameObject.GetComponent<AmmoPickup>();
+        var ammoPickup = hit.gameObject.GetComponentInParent<AmmoPickup>();
         if (ammoPickup)
         {
             ammoPickup.PickUp(gameObject);
