@@ -65,7 +65,7 @@ public class AttackState : EnemyBaseState
         if (distance < enemyAI.AttackRange / 6)
         {
             Vector3 dirToPlayer = transform.position - enemyAI.PlayerTarget.transform.position;
-            Vector3 newPos = (transform.position + dirToPlayer) /2;
+            Vector3 newPos = (transform.position + dirToPlayer) / 2;
             enemyAI.AgentPath.isStopped = false;
 
             enemyAI.AgentPath.SetDestination(newPos);
@@ -92,7 +92,7 @@ public class AttackState : EnemyBaseState
             enemyAI.AgentPath.isStopped = true;
             enemyAI.AgentPath.ResetPath();
 
-            if(enemyAI.Weapon != null)
+            if (enemyAI.Weapon != null)
             {
                 enemyAI.Weapon.ReleaseTrigger();
             }
@@ -190,7 +190,7 @@ public class AttackState : EnemyBaseState
         curSpeed = curMove.magnitude / Time.deltaTime;
         previousPosition = transform.position;
 
-        if(curSpeed > 6)
+        if (curSpeed > 6)
         {
             enemyAI.Anim.speed = curSpeed / 5;
         }
@@ -203,16 +203,16 @@ public class AttackState : EnemyBaseState
     }
 
 
-    
+
     void FireBullet()
     {
         RaycastHit hitPlayer;
         Ray playerPos = new Ray(enemyAI.Weapon.transform.position, enemyAI.Weapon.transform.forward);
 
-        if(Physics.SphereCast(playerPos, 0.001f, out hitPlayer, enemyAI.Weapon.range * 5f))
+        if (Physics.SphereCast(playerPos, 0.001f, out hitPlayer, enemyAI.AttackRange * 2f))
         {
 
-            if(hitPlayer.transform.tag == "Player")
+            if (hitPlayer.transform.tag == "Player")
             {
                 enemyAI.Weapon.PressTrigger();
             }
@@ -222,5 +222,5 @@ public class AttackState : EnemyBaseState
             }
         }
     }
-    
+
 }

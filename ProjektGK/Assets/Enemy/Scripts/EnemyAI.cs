@@ -36,7 +36,7 @@ public class EnemyAI : MonoBehaviour
     public float AttackRange = 10.0f; // attack range
 
     [SerializeField]
-    public float DetectionRange = 10.0f; // player distance detection
+    public float DetectionRange = 20.0f; // player distance detection
 
     [SerializeField]
     public float ObstacleReverseRange = 2.0f; // obstacle detection range

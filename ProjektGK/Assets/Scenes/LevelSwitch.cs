@@ -7,7 +7,7 @@ public class LevelSwitch : MonoBehaviour
 {
     public Animator animator;
 
-    public int goToIdLevel;
+    public string goToNameLevel;
 
     public float waitTime = 0;
 
@@ -37,9 +37,8 @@ public class LevelSwitch : MonoBehaviour
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1
             && animator.GetCurrentAnimatorStateInfo(0).IsName("Fade_OUT"))
             {
-                SceneManager.LoadScene(goToIdLevel);
+                SceneManager.LoadScene(goToNameLevel);
             }
         }
     }
-
 }

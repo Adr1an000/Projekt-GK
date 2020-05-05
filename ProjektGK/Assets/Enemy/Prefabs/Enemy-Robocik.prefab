@@ -258,7 +258,7 @@ MonoBehaviour:
   PatrolSpeed: 2
   MinDistanceFromPlayer: 80
   TurnSpeed: 2
-  AttackRange: 40
+  AttackRange: 60
   DetectionRange: 10
   ObstacleReverseRange: 2
   AgentPath: {fileID: 1170700265329936511}
@@ -347,6 +347,7 @@ MonoBehaviour:
   affiliation: 0
   friendlyFire: 0
   destroyOnDeath: 0
+  invincible: 0
   healthBar: {fileID: 0}
   onDeath:
     m_PersistentCalls:
