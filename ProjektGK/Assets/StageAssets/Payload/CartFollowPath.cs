@@ -19,17 +19,10 @@ public class CartFollowPath : MonoBehaviour
     private void LateUpdate()
     {
 
-        var targetDirection = target[current].transform.position - transform.position;
-        var targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-
-        if (transform.rotation != targetRotation)
-        {
-            GetComponent<Rigidbody>().rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
-        }
           
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(Vector3.Distance(transform.position, target[current].position) > 1)
         {
@@ -43,6 +36,13 @@ public class CartFollowPath : MonoBehaviour
                 playerRespawn.SetRespawnPoint(target[current]);
             }
             current = (current + 1) % target.Length;
+        }
+        var targetDirection = target[current].transform.position - transform.position;
+        var targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+
+        if (transform.rotation != targetRotation)
+        {
+            GetComponent<Rigidbody>().rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
         }
     }
 }
