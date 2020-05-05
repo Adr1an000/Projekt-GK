@@ -23,14 +23,14 @@ public class LevelSwitch : MonoBehaviour
 
     private void Update()
     {
-        if(!sceneWillChange)
+        if (!sceneWillChange)
         {
             return;
         }
 
         waitTime -= Time.deltaTime;
 
-        if(waitTime <= 0)
+        if (waitTime <= 0)
         {
             animator.SetBool("FadeOut", true);
 
@@ -41,4 +41,5 @@ public class LevelSwitch : MonoBehaviour
             }
         }
     }
+
 }

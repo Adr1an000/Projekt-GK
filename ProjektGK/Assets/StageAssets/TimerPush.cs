@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TimerPush : MonoBehaviour
@@ -40,6 +41,10 @@ public class TimerPush : MonoBehaviour
         if (startTick && (minutesLeft > 0 || secondsLeft > 0))
         {
             StartCoroutine(TimerTake());
+        }
+        if (minutesLeft == 0 && secondsLeft == 0)
+        {
+            SceneManager.LoadScene("DefeatMenu");
         }
     }
 
