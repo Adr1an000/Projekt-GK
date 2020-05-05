@@ -10,6 +10,7 @@ public class PlayerRespawn : MonoBehaviour
     public int restoreHealth = 200;
     private Health playerHealth = null;
     private WeaponManager weaponManager = null;
+    public CartFollowPath cartFollowPath;
 
     public void SetRespawnPoint(Transform newPoint)
     {
@@ -26,6 +27,7 @@ public class PlayerRespawn : MonoBehaviour
             GetComponent<CharacterController>().enabled = true;
             playerHealth.Heal(restoreHealth);
             weaponManager.ammo += restoreAmmo;
+            cartFollowPath.speed = 0;
         }
     }
     private void Start()

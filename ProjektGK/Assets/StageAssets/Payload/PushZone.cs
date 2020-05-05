@@ -15,7 +15,7 @@ public class PushZone : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (cartFollowPath.speed > 0)
         {
@@ -25,7 +25,7 @@ public class PushZone : MonoBehaviour
         {
             cartFollowPath.speed = 0;
         }
-    }
+    }*/
 
     private void OnTriggerStay(Collider other)
     {
