@@ -14,6 +14,7 @@ public class HealthPickup : MonoBehaviour
             if (health.currentHealth < health.maxHealth)
             {
                 health.Heal(amount);
+                GetComponent<Respawnable>().Respawn();
                 Destroy(gameObject);
             }
         }

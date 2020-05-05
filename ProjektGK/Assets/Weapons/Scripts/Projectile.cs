@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
             Physics.IgnoreCollision(collider, collision.collider);
             return;
         }
-        Health health = collision.gameObject.GetComponent<Health>();
+        Health health = collision.gameObject.GetComponentInParent<Health>();
         if (health != null)
         {
             health.DealDamage(Damage, Affiliation);
