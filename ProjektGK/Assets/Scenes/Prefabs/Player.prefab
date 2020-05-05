@@ -328,6 +328,7 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   restoreAmmo: 100
   restoreHealth: 200
+  cartFollowPath: {fileID: 0}
 --- !u!1 &5600578815223493946
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,7 +656,7 @@ PrefabInstance:
     - target: {fileID: 7177860671928613587, guid: e6bcaa7099921db4285379ca5a57fb3b,
         type: 3}
       propertyPath: spread
-      value: 0.2
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6bcaa7099921db4285379ca5a57fb3b, type: 3}
@@ -692,7 +693,7 @@ PrefabInstance:
     - target: {fileID: 5407856857668864304, guid: 787385495db2eab4d8e6f0d20b1509cb,
         type: 3}
       propertyPath: numberOfProjectiles
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5407856857668864305, guid: 787385495db2eab4d8e6f0d20b1509cb,
         type: 3}
