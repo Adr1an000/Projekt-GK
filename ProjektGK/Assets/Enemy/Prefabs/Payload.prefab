@@ -10,7 +10,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8552134717624371188, guid: 0be3fd9dd4c3bab4daa018735c1898dd, type: 3}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cartFollowPath: {fileID: 5047838578673095500}
-  CartSpeed: 10
+  CartSpeed: 8
 --- !u!1 &5047838578570886949
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +293,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   speed: 0
+  playerRespawn: {fileID: 0}
 --- !u!54 &5047838578673095498
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -334,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13c79a4c53b8ea478c7c48d462c4b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionEffect: {fileID: 140400, guid: f66e014454bdeb942944471c5e19da6c, type: 3}
+  explosionEffect: {fileID: 100008, guid: 7e434543af9a9694eb543bfed5b37dcc, type: 3}
   explode: 0
 --- !u!64 &5047838578772399831
 MeshCollider:
@@ -346,7 +347,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 0be3fd9dd4c3bab4daa018735c1898dd, type: 3}
