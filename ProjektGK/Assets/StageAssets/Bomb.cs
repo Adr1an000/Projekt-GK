@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     public GameObject explosionEffect;
+    public GameObject explosionTarget;
 
     public bool explode = false;
     private bool alreadyExploding = false;
@@ -28,6 +29,11 @@ public class Bomb : MonoBehaviour
     private void Explode()
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
+
+        if(explosionTarget != null)
+        {
+            Destroy(explosionTarget);
+        }
 
         Destroy(gameObject);
     }
