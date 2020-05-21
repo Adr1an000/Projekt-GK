@@ -12,6 +12,7 @@ public class W_PlayerMovement : MonoBehaviour
     public float distance = 0.4f;
     public LayerMask groundMask;
     public float jumpHeight = 3f;
+    public bool allowMovement = true;
 
     bool isGrounded = false;
     bool secondJump = false;
@@ -32,6 +33,8 @@ public class W_PlayerMovement : MonoBehaviour
     }
     void Update()
     {
+        if (!allowMovement) return;
+
         isGrounded = Physics.CheckSphere(groundCheck.position, distance, groundMask);
         if (isGrounded)
         {
