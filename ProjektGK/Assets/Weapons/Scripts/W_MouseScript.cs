@@ -6,6 +6,7 @@ public class W_MouseScript : MonoBehaviour
 {
     public float mouseSensivity = 3f;
     public Transform playerBody;
+    public bool allowRotation = true;
 
     float xRotation = 0;
 
@@ -18,6 +19,8 @@ public class W_MouseScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!allowRotation) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensivity;
 
@@ -27,5 +30,6 @@ public class W_MouseScript : MonoBehaviour
 
         playerBody.Rotate(Vector3.up * mouseX);
         transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        
     }
 }
