@@ -13,4 +13,9 @@ public class CursorScript : MonoBehaviour
         Cursor.visible = visible;
     }
 
+    private void Update()
+    {
+        Cursor.lockState = mode;
+        Cursor.visible = visible;
+    }
 }
