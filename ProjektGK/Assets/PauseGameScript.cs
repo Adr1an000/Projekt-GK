@@ -41,6 +41,7 @@ public class PauseGameScript : MonoBehaviour
         PlayerHudUI.SetActive(false);
 
         CursorObject.GetComponent<CursorScript>().visible = true;
+        CursorObject.GetComponent<CursorScript>().mode = CursorLockMode.None;
         CameraObject.GetComponent<W_MouseScript>().enabled = false;
 
         Time.timeScale = 0f;
@@ -56,6 +57,7 @@ public class PauseGameScript : MonoBehaviour
         PlayerHudUI.SetActive(true);
 
         CursorObject.GetComponent<CursorScript>().visible = false;
+        CursorObject.GetComponent<CursorScript>().mode = CursorLockMode.Locked;
         CameraObject.GetComponent<W_MouseScript>().enabled = true;
 
         Time.timeScale = 1f;
