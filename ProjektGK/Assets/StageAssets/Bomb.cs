@@ -8,6 +8,9 @@ public class Bomb : MonoBehaviour
     public GameObject explosionTarget;
 
     public bool explode = false;
+
+    public string ExplosionSoundName = "ExplosionSound";
+
     private bool alreadyExploding = false;
 
     void Start()
@@ -30,7 +33,9 @@ public class Bomb : MonoBehaviour
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
 
-        if(explosionTarget != null)
+        FindObjectOfType<SoundManager>().PlayMusic(ExplosionSoundName);
+
+        if (explosionTarget != null)
         {
             Destroy(explosionTarget);
         }
