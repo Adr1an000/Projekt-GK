@@ -122,6 +122,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+     //   FindObjectOfType<SoundManager>().PlayMusic("Robot");
+    }
+
     private void ShowFloatingText()
     {
         if(lastHealth - health.currentHealth < 0)
