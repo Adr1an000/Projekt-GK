@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerRespawn : MonoBehaviour
 {
@@ -12,6 +15,8 @@ public class PlayerRespawn : MonoBehaviour
     private WeaponManager weaponManager = null;
     public CartFollowPath cartFollowPath;
     public int invincibileTime = 3;
+    public GameObject respawnScreen;
+    private Text respawnTimerText;
 
     public void SetRespawnPoint(Transform newPoint)
     {
@@ -34,16 +39,24 @@ public class PlayerRespawn : MonoBehaviour
     }
     private void Start()
     {
+        respawnScreen.SetActive(false);
         playerHealth = GetComponent<Health>();
         playerHealth.onDeath.AddListener(Respawn);
         weaponManager = GetComponent<WeaponManager>();
+        respawnTimerText = respawnScreen.transform.GetChild(0).gameObject.GetComponent<Text>();
     }
     //After respawn, sets player invincibile for given time.
     IEnumerator SetPlayerInvincivile()
     {
         //Można tutaj wrzucić wyświetlanie ekranu nieśmiertelności.
         GetComponent<Health>().invincible = true;
-        yield return new WaitForSeconds (invincibileTime);
+        respawnScreen.SetActive(true);
+        for(int i=0; i<invincibileTime; i++)
+        {
+            respawnTimerText.text=(invincibileTime-i).ToString();
+            yield return new WaitForSeconds(1);
+        }
         GetComponent<Health>().invincible = false;
+        respawnScreen.SetActive(false);
     }
 }
