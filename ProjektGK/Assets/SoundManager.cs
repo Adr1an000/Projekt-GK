@@ -7,6 +7,8 @@ using UnityEngine.Audio;
 public class SoundManager : MonoBehaviour
 {
     public SoundEffect[] SoundEffects;
+    public float musicVolume = 0.5f;
+    public float effectsVolume = 0.5f;
 
     private void Awake()
     {
@@ -28,6 +30,18 @@ public class SoundManager : MonoBehaviour
         if(soundEffect != null)
         {
             soundEffect.ClipAudioSource.Play();
+        }
+    }
+
+
+    public void UpdateVolume()
+    {
+        foreach (var effect in SoundEffects)
+        {
+            if (effect.AudioName == "IndoorMusic" || effect.AudioName == "OutdoorMusic")
+                effect.ClipAudioSource.volume = musicVolume;
+            else
+                effect.ClipAudioSource.volume = effectsVolume;
         }
     }
 }
