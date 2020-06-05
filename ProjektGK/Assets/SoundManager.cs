@@ -29,7 +29,8 @@ public class SoundManager : MonoBehaviour
 
         if(soundEffect != null)
         {
-            soundEffect.ClipAudioSource.Play();
+            //soundEffect.ClipAudioSource.Play();
+            soundEffect.ClipAudioSource.PlayOneShot(soundEffect.EffectSound);
         }
     }
 

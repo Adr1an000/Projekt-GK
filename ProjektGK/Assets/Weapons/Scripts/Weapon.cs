@@ -31,7 +31,11 @@ public class Weapon : MonoBehaviour
     public Animator animator;
     [Tooltip("Manually tweak the speed of the animation. Animation speed is equal to the fire rate times this value")]
     public float animationSpeedMultiplier = 1f;
-    
+
+    [Header("Sounds")]
+    public SoundManager soundManager = null;
+    public string soundName = "GunshotGun";
+
     private float timeSinceLastShot = 0f;
     private bool shouldShoot = false;
 
@@ -110,6 +114,7 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        soundManager = FindObjectOfType<SoundManager>();
         currentAmmo = magazineSize;
     }
 
@@ -141,6 +146,10 @@ public class Weapon : MonoBehaviour
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
                     ShootProjectile();
+                }
+                if (soundManager)
+                {
+                    soundManager.PlayMusic(soundName);
                 }
             }
         }
