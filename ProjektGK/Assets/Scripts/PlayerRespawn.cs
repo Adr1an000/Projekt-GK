@@ -27,6 +27,7 @@ public class PlayerRespawn : MonoBehaviour
     {
         if (respawnPoint != null)
         {
+            GameObject.Find("Stats").GetComponent<Stats>().increment_deaths();//new
             Debug.Log(respawnPoint.position);
             GetComponent<CharacterController>().enabled = false;
             transform.position = respawnPoint.position;

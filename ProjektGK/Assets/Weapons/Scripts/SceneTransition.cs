@@ -11,6 +11,7 @@ public class SceneTransition : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadScene(sceneName);
+        GameObject.Find("Stats").GetComponent<Stats>().reset();//new
     }
 
     public void Help()
