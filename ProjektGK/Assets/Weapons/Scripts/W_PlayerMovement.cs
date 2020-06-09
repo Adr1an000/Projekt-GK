@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//author: Dawid Musialik
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
