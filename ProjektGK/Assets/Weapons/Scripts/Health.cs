@@ -36,9 +36,15 @@ public class Health : MonoBehaviour
                 onDamage.Invoke(damage);
             if (currentHealth <= 0)
             {
-                alive = false;
                 if (onDeath != null)
                     onDeath.Invoke();
+                //check if enemy was killed and update stats
+                if (this.tag != "Player" && alive==true)
+                {
+                    GameObject.Find("Stats").GetComponent<Stats>().increment_kills();//new
+                }
+
+                alive = false;
             }
         }
     }
@@ -72,4 +78,5 @@ public class Health : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }
