@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//author: PawełSalicki, Adrian Skutela
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
