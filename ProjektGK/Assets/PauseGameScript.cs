@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿//authors:________, Dawid Musialik
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
