@@ -41,7 +41,7 @@ public class Health : MonoBehaviour
                 //check if enemy was killed and update stats
                 if (this.tag != "Player" && alive==true)
                 {
-                    GameObject.Find("Stats").GetComponent<Stats>().increment_kills();//new
+                    GameObject.Find("Stats").GetComponent<Stats>().increment_kills();
                 }
 
                 alive = false;

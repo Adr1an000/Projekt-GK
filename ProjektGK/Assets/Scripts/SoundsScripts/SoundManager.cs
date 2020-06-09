@@ -1,7 +1,8 @@
 
-﻿using System;
 
 ﻿//Authors: Paweł Salicki, Dawid Musialik
+
+using System;
 
 using System.Collections;
 using System.Collections.Generic;

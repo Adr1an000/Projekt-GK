@@ -54,7 +54,7 @@ public class PlayerRespawn : MonoBehaviour
     //After respawn, sets player invincibile for given time.
     IEnumerator SetPlayerInvincivile()
     {
-        //Można tutaj wrzucić wyświetlanie ekranu nieśmiertelności.
+        
         GetComponent<Health>().invincible = true;
         respawnScreen.SetActive(true);
         for(int i=0; i<invincibileTime; i++)
